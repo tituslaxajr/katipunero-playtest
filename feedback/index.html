@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ulat — Katipunero Playtest Feedback</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=IM+Fell+English:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <style>
+      :root { --ink: #0c0a08; --paper: #efe4cf; --sheet: #f6eedd; --crimson: #c8202a; --muted: #6b5f4d;
+        --display: "Big Shoulders Display", Impact, sans-serif; --serif: "IM Fell English", Georgia, serif; --mono: "IBM Plex Mono", ui-monospace, monospace; }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { background: var(--paper); color: var(--ink); font-family: var(--serif); font-size: 19px; line-height: 1.5; }
+      header { display: flex; justify-content: space-between; align-items: center; padding: 18px clamp(16px, 4vw, 56px); background: var(--ink); color: var(--paper); }
+      header a { color: var(--paper); text-decoration: none; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
+      header .brand { font-family: var(--display); font-weight: 900; font-size: 22px; letter-spacing: 0.16em; }
+      main { max-width: 820px; margin: 0 auto; padding: clamp(40px, 7vw, 90px) 16px; }
+      .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--crimson); }
+      h1 { font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: clamp(52px, 9vw, 110px); line-height: 0.88; margin: 14px 0 16px; }
+      .lede { color: #4a4033; max-width: 600px; }
+      form { margin-top: 36px; background: var(--sheet); border: 1px solid rgba(12,10,8,0.25); box-shadow: 10px 10px 0 var(--ink); padding: clamp(20px, 4vw, 44px); display: grid; gap: 28px; }
+      fieldset { border: 0; display: grid; gap: 10px; }
+      legend, label.q { font-family: var(--display); font-weight: 800; font-size: 24px; text-transform: uppercase; letter-spacing: 0.03em; line-height: 1.1; margin-bottom: 6px; }
+      .hint { font-size: 15px; color: var(--muted); font-style: italic; margin-top: -4px; }
+      input[type=text], input[type=email], textarea, select { font: inherit; font-size: 18px; width: 100%; padding: 10px 12px; background: #fffaf0; border: 1px solid rgba(12,10,8,0.35); border-radius: 0; color: var(--ink); }
+      textarea { min-height: 110px; resize: vertical; }
+      input:focus, textarea:focus, select:focus { outline: 2px solid var(--crimson); outline-offset: 1px; }
+      .scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+      .scale label { position: relative; }
+      .scale input { position: absolute; opacity: 0; inset: 0; }
+      .scale span { display: block; text-align: center; padding: 12px 0; border: 1px solid rgba(12,10,8,0.35); font-family: var(--display); font-weight: 900; font-size: 24px; cursor: pointer; background: #fffaf0; }
+      .scale input:checked + span { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+      .scale input:focus-visible + span { outline: 2px solid var(--crimson); outline-offset: 2px; }
+      .ends { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+      .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      button { font-family: var(--display); font-weight: 900; font-size: 24px; letter-spacing: 0.1em; text-transform: uppercase; background: var(--crimson); color: var(--paper); border: 0; padding: 16px 32px; cursor: pointer; justify-self: start; }
+      button:hover { background: var(--ink); }
+      .msg { font-family: var(--mono); font-size: 13px; color: var(--crimson); min-height: 1.4em; }
+      .thanks { display: none; margin-top: 36px; }
+      .thanks h2 { font-family: var(--display); font-weight: 900; font-size: 56px; text-transform: uppercase; line-height: 0.9; }
+      .thanks p { margin-top: 12px; color: #4a4033; }
+      .sent form { display: none; } .sent .thanks { display: block; }
+      .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+      @media (max-width: 640px) { .two { grid-template-columns: 1fr; } }
+      /* Ink & paper motion, matching the landing page: headings bleed in like wet ink, the sheet is pulled from the block */
+      h1, .thanks h2 { animation: bleed 1.3s cubic-bezier(0.7, 0, 0.2, 1) both; }
+      form { animation: pull 1.2s cubic-bezier(0.7, 0, 0.2, 1) 0.2s both; }
+      @keyframes bleed { from { filter: blur(16px); opacity: 0; transform: scale(1.06); } }
+      @keyframes pull { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(-20px); } }
+      @media (prefers-reduced-motion: reduce) { h1, .thanks h2, form { animation: none; } }
+    </style>
+  </head>
+  <body>
+    <header><a class="brand" href="../"><img src="../assets/img/logo-on-dark.svg" alt="Katipunero" style="height: 30px; display: block" /></a><a href="../play/">← Back to the game</a></header>
+    <main id="main">
+      <div class="kicker">Ulat ng labanan · After-action report</div>
+      <h1>How did<br />it feel?</h1>
+      <p class="lede">Be honest. “This felt bad” helps more than “it’s good”. It takes about 3 minutes.</p>
+
+      <form name="playtest-feedback" id="fb" novalidate>
+        <input type="hidden" name="form-name" value="playtest-feedback" />
+        <p class="sr"><label>Leave empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+
+        <div class="two">
+          <div><label class="q" for="alias">War name</label><input type="text" id="alias" name="alias" placeholder="the name you enlisted with" /></div>
+          <div><label class="q" for="wave">How far did you get?</label>
+            <select id="wave" name="furthest_wave">
+              <option value="wave1">Wave 1</option><option value="wave2">Wave 2</option><option value="wave3">Wave 3</option><option value="won">Won all three</option>
+            </select></div>
+        </div>
+
+        <fieldset>
+          <legend>Combat was fun</legend>
+          <div class="scale" role="radiogroup">
+            <label><input type="radio" name="fun" value="1" /><span>1</span></label><label><input type="radio" name="fun" value="2" /><span>2</span></label><label><input type="radio" name="fun" value="3" /><span>3</span></label><label><input type="radio" name="fun" value="4" /><span>4</span></label><label><input type="radio" name="fun" value="5" /><span>5</span></label>
+          </div>
+          <div class="ends"><span>Not at all</span><span>Very</span></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>I could tell when to parry (sangga)</legend>
+          <p class="hint">Was the enemy's flash or wind-up readable?</p>
+          <div class="scale" role="radiogroup">
+            <label><input type="radio" name="parry_readable" value="1" /><span>1</span></label><label><input type="radio" name="parry_readable" value="2" /><span>2</span></label><label><input type="radio" name="parry_readable" value="3" /><span>3</span></label><label><input type="radio" name="parry_readable" value="4" /><span>4</span></label><label><input type="radio" name="parry_readable" value="5" /><span>5</span></label>
+          </div>
+          <div class="ends"><span>Never</span><span>Always</span></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Difficulty</legend>
+          <div class="scale" role="radiogroup">
+            <label><input type="radio" name="difficulty" value="1" /><span>1</span></label><label><input type="radio" name="difficulty" value="2" /><span>2</span></label><label><input type="radio" name="difficulty" value="3" /><span>3</span></label><label><input type="radio" name="difficulty" value="4" /><span>4</span></label><label><input type="radio" name="difficulty" value="5" /><span>5</span></label>
+          </div>
+          <div class="ends"><span>Too easy</span><span>Too hard</span></div>
+        </fieldset>
+
+        <div><label class="q" for="best">Best moment</label><textarea id="best" name="best_moment" placeholder="When did it feel great?"></textarea></div>
+        <div><label class="q" for="worst">Most frustrating moment</label><textarea id="worst" name="frustration" placeholder="When did it feel unfair, confusing or clunky?"></textarea></div>
+        <div><label class="q" for="arnis">Did it feel like arnis?</label><p class="hint">Practitioners: anything wrong with the angles, footwork, terms or technique?</p><textarea id="arnis" name="arnis_authenticity"></textarea></div>
+
+        <div class="two">
+          <div><label class="q" for="ctrl">Played with</label><select id="ctrl" name="controls"><option value="kbm">Keyboard + mouse</option><option value="controller">Controller</option></select></div>
+          <div><label class="q" for="perf">Did it run smoothly?</label><select id="perf" name="performance"><option value="smooth">Smooth</option><option value="some">Some stutter</option><option value="bad">Laggy / hard to play</option><option value="broken">Didn't load</option></select></div>
+        </div>
+
+        <div><label class="q" for="bug">Bugs or anything else?</label><textarea id="bug" name="bugs" placeholder="Optional"></textarea></div>
+
+        <button type="submit" id="send">Send report</button>
+        <p class="msg" id="msg" role="alert"></p>
+      </form>
+
+      <div class="thanks" aria-live="polite">
+        <h2>Salamat,<br /><span id="thx-name">kasama</span>.</h2>
+        <p>Your report is in. You can <a href="../play/">fight again</a>. Every playthrough helps.</p>
+      </div>
+    </main>
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/collect.js"></script>
+    <script>
+      (function () {
+        var form = document.getElementById("fb"), msg = document.getElementById("msg");
+        try {
+          var who = JSON.parse(localStorage.getItem("katipunero.enlisted") || "null");
+          if (who && who.alias) document.getElementById("alias").value = who.alias;
+        } catch (e) {}
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var btn = document.getElementById("send"); btn.disabled = true; btn.textContent = "Sending…";
+          window.sendToSheet(form)
+            .then(function () {
+              document.getElementById("thx-name").textContent = document.getElementById("alias").value.trim() || "kasama";
+              document.getElementById("main").classList.add("sent");
+              window.scrollTo(0, 0);
+            })
+            .catch(function () { btn.disabled = false; btn.textContent = "Send report"; msg.textContent = "Couldn't send. Check your connection and try again."; });
+        });
+      })();
+    </script>
+  </body>
+</html>
