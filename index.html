@@ -306,6 +306,7 @@
       .ai { padding-top: clamp(120px, 14vw, 190px); }
       .ai-head { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; }
       .ai-head p { color: var(--paper-dim); max-width: 560px; }
+      .ai-head p b { color: var(--paper); font-weight: normal; font-style: italic; }
       .ai-table { margin-top: 48px; border-top: 1px solid var(--line); font-size: 16px; }
       .ai-row { display: grid; grid-template-columns: 1.1fr 1fr 1.5fr 1.5fr; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--line); }
       .ai-row span { color: var(--paper-dim); }
@@ -319,7 +320,7 @@
         .ai-row { grid-template-columns: 1fr; gap: 4px; }
         .ai-row span:nth-child(2)::before { content: "Tool: "; color: var(--crimson-hi); }
         .ai-row span:nth-child(3)::before { content: "AI: "; color: var(--crimson-hi); }
-        .ai-row span:nth-child(4)::before { content: "Person: "; color: var(--crimson-hi); }
+        .ai-row span:nth-child(4)::before { content: "Human: "; color: var(--crimson-hi); }
       }
 
       /* ============ FOOTER ============ */
@@ -679,20 +680,24 @@
       <section class="ai pad" id="ai" aria-labelledby="ai-title">
         <div class="ai-head">
           <div>
-            <div class="kicker rv">Pahayag sa AI · AI declaration</div>
+            <div class="kicker rv">Pahayag sa AI · AI declaration · Proof of concept</div>
             <h2 class="h-lg rv ink" id="ai-title" style="margin-top: 18px">How this<br />was made.</h2>
           </div>
-          <p class="rv">This prototype was made with a lot of help from generative AI. We say so openly because you're playtesting it, and because how a game gets made is part of what you're studying. A person conceived, directed and reviewed every piece below. The arnis technique, the terms and the playtest itself are human.</p>
+          <div class="rv">
+            <p>This build is a <b>proof of concept</b>. We used generative AI to make it quickly enough to put in your hands and find out whether the combat is fun. The AI-made pieces below are placeholders and starting points, not the finished game.</p>
+            <p style="margin-top: 14px">The game's UX is <b>human-centred</b>. Playtesting, fine-tuning and finalising the narrative, gameplay and illustration will be done by people, starting with your feedback.</p>
+          </div>
         </div>
-        <div class="ai-table rv" role="table" aria-label="What was made with AI">
-          <div class="ai-row ai-th" role="row"><span role="columnheader">Part of the game</span><span role="columnheader">Tool</span><span role="columnheader">What the AI did</span><span role="columnheader">What a person did</span></div>
-          <div class="ai-row" role="row"><span role="cell"><b>Code</b> (game + this website)</span><span role="cell">Claude (Anthropic) via Claude Code</span><span role="cell">Wrote the Unity C# scripts, the web build and this site</span><span role="cell">Set the design and rules, play-tested and judged the feel, approved each step</span></div>
-          <div class="ai-row" role="row"><span role="cell"><b>Illustrations</b> (story art, posters)</span><span role="cell">AI tools</span><span role="cell">Generated the ink-wash, noir and woodcut images</span><span role="cell">Art direction and prompts, chose and curated the images</span></div>
-          <div class="ai-row" role="row"><span role="cell"><b>3D characters</b></span><span role="cell">Hunyuan3D-2, TRELLIS; Mixamo</span><span role="cell">Turned concept art into 3D models; auto-rigged them and provided the animations</span><span role="cell">Concept art direction, picked and imported models</span></div>
-          <div class="ai-row" role="row"><span role="cell"><b>Voice, music &amp; sound</b></span><span role="cell">AI tools</span><span role="cell">Generated the trailer narration and music, and the hit, parry and ambience sounds</span><span role="cell">Picked and placed every sound</span></div>
-          <div class="ai-row" role="row"><span role="cell"><b>Story &amp; characters</b></span><span role="cell">AI tools</span><span role="cell">Drafted the backstory and character bible</span><span role="cell">Set the premise and history, edited and approved</span></div>
-          <div class="ai-row" role="row"><span role="cell"><b>Logo &amp; page text</b></span><span role="cell">Claude (Anthropic)</span><span role="cell">Built the logo from the Big Shoulders font (open licence) and drafted the copy</span><span role="cell">Came up with the struck-through logo idea and chose the wording</span></div>
-          <div class="ai-row" role="row"><span role="cell"><b>Arnis technique &amp; terms</b></span><span role="cell">None</span><span role="cell">—</span><span role="cell">Moveset, angles, Tagalog terms and corrections by a martial arts instructor</span></div>
+        <div class="ai-table rv" role="table" aria-label="Where AI was used, and the human role">
+          <div class="ai-row ai-th" role="row"><span role="columnheader">Part of the game</span><span role="columnheader">AI tool (proof of concept)</span><span role="columnheader">What the AI did</span><span role="columnheader">Human role: now → final</span></div>
+          <div class="ai-row" role="row"><span role="cell"><b>Illustrations</b> (story art, posters)</span><span role="cell">Gemini (Google)</span><span role="cell">Generated the ink-wash, noir and woodcut concept images</span><span role="cell">Art direction and selection now; final illustration by human artists</span></div>
+          <div class="ai-row" role="row"><span role="cell"><b>3D characters</b></span><span role="cell">Tripo3D; Mixamo</span><span role="cell">Turned concept art into 3D models; auto-rigged and animated them</span><span role="cell">Choosing and importing models now; final characters refined by people</span></div>
+          <div class="ai-row" role="row"><span role="cell"><b>Voice, music &amp; sound</b></span><span role="cell">ElevenLabs</span><span role="cell">Generated the trailer narration and music, and the hit, parry and ambience sounds</span><span role="cell">Picking and placing sounds now; tuned against playtest feedback</span></div>
+          <div class="ai-row" role="row"><span role="cell"><b>Narrative</b> (story &amp; characters)</span><span role="cell">AI</span><span role="cell">Drafted the backstory and character bible from the creator's premise</span><span role="cell">Premise and history now; the final narrative is written and approved by people</span></div>
+          <div class="ai-row" role="row"><span role="cell"><b>Arnis technique &amp; terms</b></span><span role="cell">AI (starting point)</span><span role="cell">Suggested the first moveset, strike angles and Tagalog terms</span><span role="cell">Fine-tuned and finalised by people: arnis experts, practitioners and the literature</span></div>
+          <div class="ai-row" role="row"><span role="cell"><b>Gameplay &amp; UX</b></span><span role="cell">—</span><span role="cell">—</span><span role="cell">Designed, playtested and tuned by people. This playtest is that step.</span></div>
+          <div class="ai-row" role="row"><span role="cell"><b>Code</b> (game + this website)</span><span role="cell">Claude (Anthropic), Claude Code</span><span role="cell">Wrote the Unity C# scripts, the web build and this site</span><span role="cell">Design rules, feel-testing and approval of every step</span></div>
+          <div class="ai-row" role="row"><span role="cell"><b>Logo &amp; page text</b></span><span role="cell">Claude (Anthropic)</span><span role="cell">Built the logo from the open-licence Big Shoulders font and drafted the copy</span><span role="cell">The struck-through logo idea, and final wording</span></div>
         </div>
         <p class="ai-note mono rv">Your sign-up and feedback go only to the instructor's Google Sheet. They are not sent to any AI tool.</p>
       </section>
