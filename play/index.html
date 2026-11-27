@@ -63,6 +63,11 @@
       .fight:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; }
       .gate.ready .fight { display: inline-block; }
       .gate.ready .baston, .gate.ready .pct { display: none; }
+      .stats-note { margin-top: 22px; font-family: var(--mono); font-size: 12px; color: var(--paper-dim); letter-spacing: 0.04em; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+      .stats-note button { font: inherit; color: var(--paper); background: transparent; border: 1px solid var(--line); padding: 2px 8px; cursor: pointer; }
+      .stats-note button:hover, .stats-note button:focus-visible { border-color: var(--paper); }
+      .stats-note button[aria-pressed="false"] { color: var(--paper-dim); }
+      .stats-note a { color: var(--lamp); }
       .err { color: #ff8a80; font-family: var(--mono); font-size: 13px; max-width: 560px; margin-top: 16px; display: none; }
 
       /* Controls drawer */
@@ -102,10 +107,12 @@
       <div class="gate" id="gate">
         <div>
           <h1>TONDO<br><em>1896</em></h1>
-          <p>Three waves. One rattan stick.</p>
+          <p>Four waves. One rattan stick.</p>
           <div class="baston" role="progressbar" aria-label="Loading game" aria-valuemin="0" aria-valuemax="100"><i id="fill"></i></div>
           <div class="pct" id="pct">Loading the street… 0%</div>
           <button class="fight" id="fight" type="button">FIGHT</button>
+          <p class="stats-note">Anonymous gameplay stats (no names) help improve the game.
+            <button type="button" id="stats-btn" aria-pressed="true">Stats: on</button> · <a href="../privacy/" target="_blank" rel="noopener">Privacy</a></p>
           <div class="err" id="err"></div>
           <div class="mobile-note">Best on a laptop or desktop with Chrome, Edge or Firefox — keyboard + mouse or a controller.</div>
         </div>
@@ -129,8 +136,25 @@
       <p class="tip">After you win or fall, press any key to restart.<br>When you're done, click <b>Give feedback</b> — it opens in a new tab so your game keeps running.<br><a href="../#ai" target="_blank" rel="noopener" style="color: var(--lamp)">How this game was made (AI declaration)</a></p>
     </aside>
 
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/telemetry.js"></script>
     <script src="Build/play.loader.js"></script>
     <script>
+      // Anonymous stats toggle (remembered in this browser only).
+      (function () {
+        var btn = document.getElementById("stats-btn");
+        function show() {
+          var on = !window.katipuneroRun || window.katipuneroRun.enabled();
+          btn.setAttribute("aria-pressed", String(on));
+          btn.textContent = on ? "Stats: on" : "Stats: off";
+        }
+        btn.addEventListener("click", function () {
+          if (window.katipuneroRun) window.katipuneroRun.setEnabled(!window.katipuneroRun.enabled());
+          show();
+        });
+        show();
+      })();
+
       var canvas = document.getElementById("unity-canvas");
       var gate = document.getElementById("gate");
       var fill = document.getElementById("fill");
@@ -150,7 +174,7 @@
       // Sign-up name from the landing page, if any (stored only in this browser).
       try {
         var who = JSON.parse(localStorage.getItem("katipunero.enlisted") || "null");
-        if (who && who.alias) document.querySelector(".gate p").textContent = "Mabuhay, " + who.alias + ". Three waves. One rattan stick.";
+        if (who && who.alias) document.querySelector(".gate p").textContent = "Mabuhay, " + who.alias + ". Four waves. One rattan stick.";
       } catch (e) {}
 
       createUnityInstance(canvas, {

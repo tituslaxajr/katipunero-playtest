@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fil">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy — Katipunero Playtest</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=IM+Fell+English:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <style>
+      :root { --ink: #0c0a08; --paper: #efe4cf; --sheet: #f6eedd; --crimson: #c8202a; --muted: #6b5f4d;
+        --display: "Big Shoulders Display", Impact, sans-serif; --serif: "IM Fell English", Georgia, serif; --mono: "IBM Plex Mono", ui-monospace, monospace; }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { background: var(--paper); color: var(--ink); font-family: var(--serif); font-size: 19px; line-height: 1.55; }
+      header { display: flex; justify-content: space-between; align-items: center; padding: 18px clamp(16px, 4vw, 56px); background: var(--ink); color: var(--paper); }
+      header a { color: var(--paper); text-decoration: none; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
+      main { max-width: 820px; margin: 0 auto; padding: clamp(40px, 7vw, 90px) 16px; }
+      .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--crimson); }
+      h1 { font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: clamp(52px, 9vw, 100px); line-height: 0.88; margin: 14px 0 16px; }
+      h2 { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: 28px; letter-spacing: 0.03em; line-height: 1.1; margin: 40px 0 10px; }
+      p, li { color: #3a3128; }
+      p + p { margin-top: 10px; }
+      .en { display: block; color: var(--muted); font-style: italic; font-size: 17px; margin-top: 4px; }
+      ul { margin: 10px 0 0 22px; }
+      li { margin: 6px 0; }
+      .card { margin-top: 28px; background: var(--sheet); border: 1px solid rgba(12,10,8,0.25); box-shadow: 10px 10px 0 var(--ink); padding: clamp(20px, 4vw, 36px); }
+      table { width: 100%; border-collapse: collapse; font-size: 16px; }
+      th, td { text-align: left; vertical-align: top; padding: 10px 8px; border-bottom: 1px solid rgba(12,10,8,0.18); }
+      th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+      a { color: var(--crimson); }
+      .small { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 40px; }
+      @media (max-width: 640px) { table, thead, tbody, tr, th, td { display: block; } thead { display: none; } td { border: 0; padding: 4px 0; } tr { border-bottom: 1px solid rgba(12,10,8,0.18); padding: 10px 0; } }
+    </style>
+  </head>
+  <body>
+    <header><a href="../"><img src="../assets/img/logo-on-dark.svg" alt="Katipunero" style="height: 30px; display: block" /></a><a href="../play/">← Bumalik sa laro</a></header>
+    <main>
+      <div class="kicker">Abiso sa privacy · Privacy notice</div>
+      <h1>Ang data<br />mo</h1>
+      <p>Isinulat ito para sa Data Privacy Act of 2012 (RA 10173). Maikli at diretso.
+        <span class="en">Written for the Philippine Data Privacy Act of 2012 (RA 10173). Short and plain.</span></p>
+
+      <h2>Sino ang may hawak</h2>
+      <p>Ang guro na nagpapatakbo ng Katipunero playtest ang may hawak ng data (personal information controller). Ang mga sagot ay nakaimbak sa isang Google Sheet na hawak ng guro.
+        <span class="en">Who's responsible: the teacher who runs the Katipunero playtest is the personal information controller. Answers are stored in a Google Sheet the teacher owns.</span></p>
+      <p>Tanong o hiling: <a href="mailto:titus.laxa.jr@gmail.com">titus.laxa.jr@gmail.com</a>
+        <span class="en">Questions or requests: <a href="mailto:titus.laxa.jr@gmail.com">titus.laxa.jr@gmail.com</a></span></p>
+
+      <h2>Ano ang kinokolekta</h2>
+      <div class="card">
+        <table>
+          <thead><tr><th>Saan · Where</th><th>Ano · What</th><th>Bakit · Why</th></tr></thead>
+          <tbody>
+            <tr><td><b>Sign-up</b></td><td>Pangalan, email, section, war name, karanasan sa arnis, controls, resulta ng Sangga trial. <span class="en">Name, email, section, war name, arnis experience, controls, Sangga trial result.</span></td><td>Para sa class project at para malaman kung sino ang sumali. <span class="en">For the class project and to know who took part.</span></td></tr>
+            <tr><td><b>Feedback</b></td><td>Ang mga sagot mo sa form; war name kung ilalagay mo (opsyonal). <span class="en">Your form answers; your war name if you enter it (optional).</span></td><td>Para pagandahin ang laro. <span class="en">To improve the game.</span></td></tr>
+            <tr><td><b>Gameplay stats</b></td><td>Mga bilang lang: wave na naabot, oras, parries, strikes, disarms, grades, at isang random na code. Walang pangalan, email o detalye ng device. <span class="en">Numbers only: wave reached, times, parries, strikes, disarms, grades, and a random code. No name, email or device details.</span></td><td>Para makita kung saan nahihirapan ang mga manlalaro. <span class="en">To see where players struggle.</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Ang gameplay stats</h2>
+      <ul>
+        <li>Anonymous ito. Ang random na code ay nasa browser mo lang. <span class="en">It's anonymous. The random code lives only in your browser.</span></li>
+        <li>Puwede mo itong patayin: pindutin ang <b>Stats: on</b> bago lumaban sa play page. <span class="en">You can switch it off: press <b>Stats: on</b> on the play page before you fight.</span></li>
+        <li>Naiuugnay lang ito sa feedback mo kung lalagyan mo ng tsek ang kahon sa feedback form. <span class="en">It's linked to your feedback only if you tick the box on the feedback form.</span></li>
+      </ul>
+
+      <h2>Saan napupunta</h2>
+      <p>Sa Google Sheet ng guro lang. Maaaring nasa mga server ng Google sa labas ng Pilipinas ang data. Hindi ito ibinebenta, hindi ibinabahagi sa iba, at hindi ipinapadala sa anumang AI tool.
+        <span class="en">Only to the teacher's Google Sheet. Google may store it on servers outside the Philippines. It is never sold, never shared with others, and never sent to any AI tool.</span></p>
+
+      <h2>Gaano katagal</h2>
+      <p>Buburahin ang lahat ng data pagdating ng June 30, 2027.
+        <span class="en">All data is deleted by June 30, 2027.</span></p>
+
+      <h2>Ang mga karapatan mo</h2>
+      <p>Sa ilalim ng RA 10173, may karapatan kang malaman, makita, itama, tumutol, at ipabura ang data mo, at magreklamo sa National Privacy Commission. Para ipabura, sumulat sa contact sa itaas at sabihin ang pangalan o war name mo.
+        <span class="en">Under RA 10173 you have the right to be informed, to access, correct, object to and erase your data, and to complain to the National Privacy Commission. To have your data erased, write to the contact above with your name or war name.</span></p>
+
+      <h2>Sa browser mo</h2>
+      <p>Nag-iimbak ang site ng ilang bagay sa browser mo lang (localStorage): ang war name mo para sa pagbati, ang best mo sa Sangga trial, ang wikang pinili mo, ang Stats on/off, at ang random na code. Burahin ang site data ng browser para tanggalin ang mga ito.
+        <span class="en">The site keeps a few things in your browser only (localStorage): your war name for the greeting, your Sangga trial best, your language choice, the Stats on/off choice, and the random code. Clear the browser's site data to remove them.</span></p>
+
+      <p class="small">Huling binago · Last updated: November 2026</p>
+    </main>
+  </body>
+</html>

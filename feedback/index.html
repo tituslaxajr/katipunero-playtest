@@ -73,7 +73,7 @@
           <div><label class="q" for="alias">War name</label><input type="text" id="alias" name="alias" placeholder="the name you enlisted with" /></div>
           <div><label class="q" for="wave">How far did you get?</label>
             <select id="wave" name="furthest_wave">
-              <option value="wave1">Wave 1</option><option value="wave2">Wave 2</option><option value="wave3">Wave 3</option><option value="won">Won all three</option>
+              <option value="wave1">Wave 1</option><option value="wave2">Wave 2</option><option value="wave3">Wave 3</option><option value="wave4">Wave 4 (the Teniente)</option><option value="won">Won all four</option>
             </select></div>
         </div>
 
@@ -113,6 +113,14 @@
 
         <div><label class="q" for="bug">Bugs or anything else?</label><textarea id="bug" name="bugs" placeholder="Optional"></textarea></div>
 
+        <div>
+          <label style="display: flex; gap: 12px; align-items: flex-start; font-size: 16px; cursor: pointer">
+            <input type="checkbox" id="link-stats" style="width: 20px; height: 20px; flex: none; margin-top: 3px; accent-color: var(--crimson)" />
+            <span>Isama ang gameplay stats ko sa report na ito. <em>Include my anonymous gameplay stats (waves, parries, grades) with this report.</em> <a href="../privacy/" target="_blank" rel="noopener">Privacy</a></span>
+          </label>
+          <input type="hidden" name="run_sid" id="run-sid" />
+        </div>
+
         <button type="submit" id="send">Send report</button>
         <p class="msg" id="msg" role="alert"></p>
       </form>
@@ -146,6 +154,10 @@
         form.addEventListener("submit", function (e) {
           e.preventDefault();
           var btn = document.getElementById("send"); btn.disabled = true; btn.textContent = "Sending…";
+          // Link this report to the anonymous gameplay stats ONLY when the box is ticked (opt-in).
+          var sid = null;
+          try { sid = localStorage.getItem("katipunero.sid"); } catch (err) {}
+          document.getElementById("run-sid").value = document.getElementById("link-stats").checked && sid ? sid : "";
           window.sendToSheet(form)
             .then(function () {
               document.getElementById("thx-name").textContent = document.getElementById("alias").value.trim() || "kasama";
