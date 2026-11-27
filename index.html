@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="fil">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -93,7 +93,12 @@
       @media (pointer: fine) { .js .cursor { display: block; } }
 
       /* ============ HEADER ============ */
-      .top { position: fixed; inset: 0 0 auto 0; z-index: 80; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px var(--gutter); mix-blend-mode: difference; }
+      .top { position: fixed; inset: 0 0 auto 0; z-index: 80; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px var(--gutter); mix-blend-mode: difference; transition: transform 0.4s var(--ease), padding 0.3s var(--ease), background-color 0.3s; }
+      /* Once you leave the hero the header gets its own ink bar, so it never sits on top of body text.
+         It slides away while you scroll down and comes back as soon as you scroll up. */
+      .top.solid { mix-blend-mode: normal; background: rgba(12, 10, 8, 0.94); border-bottom: 1px solid var(--line); padding-block: 10px; }
+      .top.away { transform: translateY(-100%); }
+      .top:focus-within { transform: none; } /* keyboard users can always reach it */
       .brand { display: block; line-height: 0; }
       .brand img { height: 34px; width: auto; }
       .top nav { display: flex; gap: clamp(14px, 2.4vw, 32px); align-items: center; }
@@ -107,6 +112,11 @@
       .snd.on i b:nth-child(2) { animation-delay: -0.3s; } .snd.on i b:nth-child(3) { animation-delay: -0.6s; }
       @keyframes eq { 0%, 100% { height: 3px; } 50% { height: 12px; } }
       .top .cta-mini { border: 1px solid #fff; padding: 8px 14px; }
+      /* Language switch: two halves of one stamp, the active one inked solid */
+      .lang { display: inline-flex; border: 1px solid #fff; }
+      .top .lang button { padding: 7px 9px; line-height: 1; }
+      .top .lang button[aria-pressed="true"] { background: #fff; color: #000; cursor: default; }
+      .top .lang button[aria-pressed="false"]:hover { text-decoration: line-through; text-decoration-thickness: 2px; }
       @media (max-width: 860px) { .navlinks { display: none; } }
       @media (max-width: 480px) { .snd span { display: none; } .brand img { height: 28px; } .top nav { gap: 14px; } }
       html, body { overflow-x: clip; }
@@ -329,9 +339,11 @@
         .ai-head { grid-template-columns: 1fr; }
         .ai-th { display: none; }
         .ai-row { grid-template-columns: 1fr; gap: 4px; }
-        .ai-row span:nth-child(2)::before { content: "Tool: "; color: var(--crimson-hi); }
+        .ai-row span:nth-child(2)::before { content: "Kasangkapan: "; color: var(--crimson-hi); }
         .ai-row span:nth-child(3)::before { content: "AI: "; color: var(--crimson-hi); }
-        .ai-row span:nth-child(4)::before { content: "Human: "; color: var(--crimson-hi); }
+        .ai-row span:nth-child(4)::before { content: "Tao: "; color: var(--crimson-hi); }
+        html[lang="en"] .ai-row span:nth-child(2)::before { content: "Tool: "; }
+        html[lang="en"] .ai-row span:nth-child(4)::before { content: "Human: "; }
       }
 
       /* ============ FOOTER ============ */
@@ -394,7 +406,7 @@
     </style>
   </head>
   <body>
-    <a class="skip" href="#kuwento">Skip to content</a>
+    <a class="skip" href="#kuwento" data-i18n="skip">Lumaktaw sa nilalaman</a>
     <!-- Shared ink filters (same "rough edge" recipe as the art pack's SVGs) -->
     <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
       <defs>
@@ -405,8 +417,8 @@
       </defs>
     </svg>
     <div class="loader" id="loader" aria-hidden="true">
-      <div class="half a"><div class="loader-inner"><div class="loader-year">18<span>72</span></div><div class="loader-cap mono">Tondo, Maynila · dapithapon</div></div></div>
-      <div class="half b"><div class="loader-inner"><div class="loader-year">18<span>72</span></div><div class="loader-cap mono">Tondo, Maynila · dapithapon</div></div></div>
+      <div class="half a"><div class="loader-inner"><div class="loader-year">18<span>72</span></div><div class="loader-cap mono" data-i18n="loader">Tondo, Maynila · dapithapon</div></div></div>
+      <div class="half b"><div class="loader-inner"><div class="loader-year">18<span>72</span></div><div class="loader-cap mono" data-i18n="loader">Tondo, Maynila · dapithapon</div></div></div>
     </div>
     <canvas class="trail" id="trail" aria-hidden="true"></canvas>
     <svg class="flood" id="flood" aria-hidden="true"><circle id="flood-c" cx="0" cy="0" r="0" fill="#0c0a08" filter="url(#blot)" /></svg>
@@ -418,27 +430,31 @@
       <a class="brand" href="#top"><img src="assets/img/logo-mono-white.svg" alt="Katipunero" /></a>
       <nav aria-label="Main">
         <div class="navlinks">
-          <a href="#kuwento">Kuwento</a>
-          <a href="#sangga">Sangga</a>
-          <a href="#galaw">Galaw</a>
-          <a href="#kaaway">Kaaway</a>
+          <a href="#kuwento" data-i18n="nav.story">Kuwento</a>
+          <a href="#sangga" data-i18n="nav.parry">Sangga</a>
+          <a href="#galaw" data-i18n="nav.moves">Galaw</a>
+          <a href="#kaaway" data-i18n="nav.foes">Kaaway</a>
         </div>
-        <button class="snd" id="snd" type="button" aria-pressed="false"><i aria-hidden="true"><b></b><b></b><b></b></i><span>Sound off</span></button>
-        <a class="cta-mini" href="#enlist">Enlist</a>
+        <div class="lang" role="group" aria-label="Wika / Language">
+          <button type="button" data-lang="fil" aria-pressed="true" lang="fil" title="Tagalog">TL</button>
+          <button type="button" data-lang="en" aria-pressed="false" lang="en" title="English">EN</button>
+        </div>
+        <button class="snd" id="snd" type="button" aria-pressed="false"><i aria-hidden="true"><b></b><b></b><b></b></i><span>Walang tunog</span></button>
+        <a class="cta-mini" href="#enlist" data-i18n="nav.enlist">Sumali</a>
       </nav>
     </header>
 
     <main id="top">
       <!-- ============ HERO ============ -->
       <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-img"><img src="assets/img/b1_aftermath.webp" alt="Enteng stands in a lamp-lit Tondo alley among fallen Guardia Civil, a rattan stick in hand." fetchpriority="high" /></div>
+        <div class="hero-img"><img src="assets/img/b1_aftermath.webp" alt="Nakatayo si Enteng sa isang eskinita sa Tondo na tinatanglawan ng lampara, sa gitna ng mga bumagsak na Guardia Civil, hawak ang isang baston na yantok." data-i18n-attr="alt:hero.alt" fetchpriority="high" /></div>
         <div class="hero-meta">
-          <div class="kicker">Combat prototype · Open playtest</div>
-          <p class="tag" lang="fil">Hindi para sa bandila.<br />Para sa kanya.</p>
-          <p class="tag-en">Not for the flag. For her. — A third-person arnis action game. Tondo, Manila, August 1896.</p>
+          <div class="kicker" data-i18n="hero.kicker">Prototype ng labanan · Bukas na playtest</div>
+          <p class="tag" data-i18n="hero.tag">Hindi para sa bandila.<br />Para sa kanya.</p>
+          <p class="tag-en" data-i18n="hero.sub">Isang third-person na larong aksiyon ng arnis. Tondo, Maynila, Agosto 1896.</p>
           <div class="hero-ctas">
-            <a class="btn" href="#enlist" data-hot><span>Join the playtest</span><span class="arr">→</span></a>
-            <a class="btn ghost" href="#sangga" data-hot><span>Try the parry first</span></a>
+            <a class="btn" href="#enlist" data-hot><span data-i18n="hero.cta1">Sumali sa playtest</span><span class="arr">→</span></a>
+            <a class="btn ghost" href="#sangga" data-hot><span data-i18n="hero.cta2">Subukan muna ang sangga</span></a>
           </div>
         </div>
         <div class="hero-title">
@@ -450,14 +466,14 @@
         <div class="hero-foot mono">
           <span>14°36′N 120°58′E</span>
           <span class="opt">Arnis · Eskrima · Kali</span>
-          <span>Scroll ↓</span>
+          <span data-i18n="hero.scroll">Mag-scroll ↓</span>
         </div>
       </section>
 
       <div class="marquee" aria-hidden="true">
         <div class="marquee-track">
-          <span>Sangga <b>✕</b> Ilag <b>✕</b> Agaw <b>✕</b> Punyo <b>✕</b> Redonda <b>✕</b> Tondo 1896 <b>✕</b> Isang baston <b>✕</b></span>
-          <span>Sangga <b>✕</b> Ilag <b>✕</b> Agaw <b>✕</b> Punyo <b>✕</b> Redonda <b>✕</b> Tondo 1896 <b>✕</b> Isang baston <b>✕</b></span>
+          <span>Sangga <b>✕</b> Ilag <b>✕</b> Agaw <b>✕</b> Punyo <b>✕</b> Redonda <b>✕</b> Tondo 1896 <b>✕</b> <i data-i18n="marquee" style="font-style: normal">Isang baston</i> <b>✕</b></span>
+          <span>Sangga <b>✕</b> Ilag <b>✕</b> Agaw <b>✕</b> Punyo <b>✕</b> Redonda <b>✕</b> Tondo 1896 <b>✕</b> <i data-i18n="marquee" style="font-style: normal">Isang baston</i> <b>✕</b></span>
         </div>
       </div>
 
@@ -465,46 +481,46 @@
       <section id="kuwento" aria-labelledby="story-title">
         <div class="story-head">
           <div>
-            <div class="kicker rv">Ang kuwento · The story</div>
-            <h2 class="h-lg rv ink" id="story-title" style="margin-top: 18px">The wrong<br />door.</h2>
+            <div class="kicker rv" data-i18n="story.kicker">Ang kuwento</div>
+            <h2 class="h-lg rv ink" id="story-title" style="margin-top: 18px" data-i18n="story.title">Maling<br />pinto.</h2>
           </div>
-          <p class="rv">Vicente “Enteng” Magbanua buried his blade and left the <i>juego todo</i> pits to raise his daughter in a quiet Tondo alley. Then a patrol hunting Katipuneros kicked in the wrong door.</p>
+          <p class="rv" data-i18n="story.lede">Ibinaon ni Vicente “Enteng” Magbanua ang kanyang patalim at iniwan ang madudugong laban ng <i>juego todo</i> para palakihin ang kanyang anak sa isang tahimik na eskinita sa Tondo. Hanggang sa isang patrolyang tumutugis sa mga Katipunero ang sumipa sa maling pinto.</p>
         </div>
         <div class="mural-wrap" id="mural-wrap">
-          <div class="mural" id="mural" tabindex="0" aria-label="Story panels, scroll sideways">
+          <div class="mural" id="mural" tabindex="0" aria-label="Mga eksena ng kuwento, i-scroll patagilid" data-i18n-attr="aria-label:mural.aria">
             <div class="mural-track" id="mural-track">
               <article class="panel">
                 <figure class="rv print">
-                  <img src="assets/img/scene1_workbench.webp" alt="Ink-wash illustration: Enteng's hands binding a rattan stick at his workbench while a child's hand sets down a carved wooden bird." loading="lazy" />
-                  <figcaption><span class="num">I</span><div><h3>A quiet workbench</h3><p>The fighter from the pits is now a rattan-cutter. He binds sticks for a living, and his daughter leaves her carved bird on the bench.</p></div></figcaption>
+                  <img src="assets/img/scene1_workbench.webp" alt="Ilustrasyong ink-wash: binibigkis ng mga kamay ni Enteng ang isang baston na yantok sa kanyang mesa, habang inilalapag ng kamay ng isang bata ang isang inukit na ibong kahoy." data-i18n-attr="alt:p1.alt" loading="lazy" />
+                  <figcaption><span class="num">I</span><div><h3 data-i18n="p1.h">Isang tahimik na gawaan</h3><p data-i18n="p1.p">Ang dating mandirigma ng juego todo ay namumutol na lang ngayon ng yantok. Bumibigkis siya ng mga baston para mabuhay, at iniiwan ng kanyang anak ang inukit nitong ibon sa kanyang mesa.</p></div></figcaption>
                 </figure>
               </article>
               <article class="panel">
                 <figure class="rv print">
-                  <img src="assets/img/scene2_raid.webp" alt="Ink-wash illustration: Guardia Civil soldiers kick in a bamboo door; pamphlets and the wooden bird lie scattered on the floor." loading="lazy" />
-                  <figcaption><span class="num">II</span><div><h3>The wrong door</h3><p>A Katipunero runner drops <i>Kalayaan</i> pamphlets in his yard. Minutes later a patrol kicks in his door and takes the one thing he swore to protect.</p></div></figcaption>
+                  <img src="assets/img/scene2_raid.webp" alt="Ilustrasyong ink-wash: sinisipa ng mga sundalong Guardia Civil ang isang pintong kawayan; nakakalat sa sahig ang mga polyeto at ang ibong kahoy." data-i18n-attr="alt:p2.alt" loading="lazy" />
+                  <figcaption><span class="num">II</span><div><h3 data-i18n="p2.h">Ang maling pinto</h3><p data-i18n="p2.p">Naghulog ang isang tagapaghatid ng Katipunan ng mga polyetong <i>Kalayaan</i> sa kanyang bakuran. Makalipas ang ilang minuto, sinipa ng isang patrolya ang kanyang pinto at kinuha ang nag-iisang bagay na isinumpa niyang iingatan.</p></div></figcaption>
                 </figure>
               </article>
               <article class="panel">
                 <figure class="rv print">
-                  <img src="assets/img/scene5_uprising.webp" alt="Ink-wash illustration: Enteng, stick in hand, faces a rain-soaked street filling with torch-bearers under a red flag." loading="lazy" />
-                  <figcaption><span class="num">III</span><div><h3>A vendetta becomes a spark</h3><p>He takes up a seasoned rattan <i>baston</i>, no steel, and curses the Spanish and the rebels alike. But every street he walks wakes up a little more of Tondo.</p></div></figcaption>
+                  <img src="assets/img/scene5_uprising.webp" alt="Ilustrasyong ink-wash: hawak ang baston, hinaharap ni Enteng ang basang kalye na napupuno ng mga may dalang sulo sa ilalim ng pulang bandila." data-i18n-attr="alt:p3.alt" loading="lazy" />
+                  <figcaption><span class="num">III</span><div><h3 data-i18n="p3.h">Paghihiganting naging mitsa</h3><p data-i18n="p3.p">Dinampot niya ang isang gulang na <i>baston</i> na yantok, walang bakal, at pareho niyang isinusumpa ang mga Espanyol at ang mga rebelde. Pero sa bawat kalyeng nilalakaran niya, unti-unting nagigising ang Tondo.</p></div></figcaption>
                 </figure>
               </article>
             </div>
           </div>
-          <p class="mural-hint mono">← Swipe →</p>
+          <p class="mural-hint mono" data-i18n="mural.hint">← I-swipe →</p>
         </div>
       </section>
 
       <!-- ============ MANIFESTO ============ -->
-      <section class="manifesto pad" aria-label="Why a stick">
-        <div class="kicker rv">Bakit baston? · Why a stick?</div>
-        <p class="big" id="manifesto" style="margin-top: 28px">Spanish law forbade Filipinos to carry blades. So the masters hid the blade inside the stick.</p>
+      <section class="manifesto pad" aria-label="Bakit baston" data-i18n-attr="aria-label:man.aria">
+        <div class="kicker rv" data-i18n="man.kicker">Bakit baston?</div>
+        <p class="big" id="manifesto" style="margin-top: 28px" data-i18n="man.text">Ipinagbawal ng batas ng Espanya ang pagdadala ng patalim ng mga Pilipino. Kaya itinago ng mga maestro ang patalim sa loob ng baston.</p>
         <div class="facts">
-          <div class="fact rv"><b>150<small>ms</small></b><span>The perfect <i>sangga</i> window. Hit it and the officer staggers wide open.</span></div>
-          <div class="fact rv"><b>3<small>waves</small></b><span>A Tondo street at dusk. Two Guardia Civil, then sabers and rifles together.</span></div>
-          <div class="fact rv"><b>1<small>baston</small></b><span>No steel until they bring it to you. Then you take it from them.</span></div>
+          <div class="fact rv"><b>150<small>ms</small></b><span data-i18n="fact1">Ang palugit ng perpektong <i>sangga</i>. Abutan mo ito at susuray ang opisyal, bukas na bukas ang depensa.</span></div>
+          <div class="fact rv"><b>3<small data-i18n="fact2.unit">alon</small></b><span data-i18n="fact2">Isang kalye sa Tondo sa dapithapon. Dalawang Guardia Civil muna, saka magkasama na ang mga sable at riple.</span></div>
+          <div class="fact rv"><b>1<small>baston</small></b><span data-i18n="fact3">Walang bakal hangga't hindi nila ito dinadala sa iyo. Saka mo ito aagawin sa kanila.</span></div>
         </div>
       </section>
 
@@ -512,16 +528,16 @@
       <section class="trial pad" id="sangga" aria-labelledby="trial-title">
         <div class="trial-grid">
           <div class="trial-copy">
-            <div class="kicker rv">Pagsubok · The trial</div>
-            <h2 class="h-lg rv ink" id="trial-title" style="margin-top: 18px">Can you<br /><span class="crim">sangga?</span></h2>
-            <p class="rv">The ring closes as the officer raises his saber. When it <b>flashes white</b>, he commits. Press <kbd>Q</kbd>, <kbd>Space</kbd>, or tap the arena just before the blade lands. Five strikes. This is the same window as the game.</p>
+            <div class="kicker rv" data-i18n="trial.kicker">Pagsubok</div>
+            <h2 class="h-lg rv ink" id="trial-title" style="margin-top: 18px" data-i18n="trial.title">Kaya mo bang<br /><span class="crim">sumangga?</span></h2>
+            <p class="rv" data-i18n="trial.lede">Lumiliit ang bilog habang itinataas ng opisyal ang kanyang sable. Kapag <b>kumislap ito ng puti</b>, buo na ang kanyang taga. Pindutin ang <kbd>Q</kbd>, <kbd>Space</kbd>, o i-tap ang arena bago tumama ang talim. Limang taga. Kapareho ito ng palugit sa laro.</p>
             <ul class="legend rv">
-              <li><i style="background: var(--paper)"></i>Perfect: last 150 ms before impact</li>
-              <li><i style="background: var(--lamp)"></i>Sangga: blocked, but you take chip damage</li>
-              <li><i style="background: var(--crimson)"></i>Too early, or hit</li>
+              <li><i style="background: var(--paper)"></i><span data-i18n="legend1">Perpekto: huling 150 ms bago tumama</span></li>
+              <li><i style="background: var(--lamp)"></i><span data-i18n="legend2">Sangga: nasalag, pero may kaunting pinsala</span></li>
+              <li><i style="background: var(--crimson)"></i><span data-i18n="legend3">Masyadong maaga, o tinamaan</span></li>
             </ul>
           </div>
-          <div class="arena rv" id="arena" role="application" aria-label="Parry trial. Press Q or Space when the ring flashes white." tabindex="0">
+          <div class="arena rv" id="arena" role="application" aria-label="Pagsubok sa sangga. Pindutin ang Q o Space kapag kumislap ng puti ang bilog." data-i18n-attr="aria-label:arena.aria" tabindex="0">
             <img class="arena-bg" src="assets/img/scene3_parry.webp" alt="" loading="lazy" />
             <svg class="rig" viewBox="0 0 400 300" aria-hidden="true">
               <circle class="target" cx="200" cy="150" r="34" />
@@ -540,7 +556,7 @@
             <div class="flash" id="flash"></div>
             <div class="arena-hud mono"><span id="round">Handa</span><span class="pips" id="pips"><i></i><i></i><i></i><i></i><i></i></span></div>
             <div class="arena-ui">
-              <button class="start" id="start" type="button" data-hot>Begin trial</button>
+              <button class="start" id="start" type="button" data-hot>Simulan</button>
               <div class="verdict" id="verdict" aria-live="assertive"></div>
               <div class="summary" id="summary" aria-live="polite"></div>
             </div>
@@ -550,43 +566,43 @@
 
       <!-- ============ MOVESET ============ -->
       <section class="pad" id="galaw" aria-labelledby="moves-title">
-        <div class="kicker rv">Mga galaw · The moveset</div>
+        <div class="kicker rv" data-i18n="moves.kicker">Mga galaw</div>
         <h2 class="h-lg rv ink" id="moves-title" style="margin-top: 18px">Solo baston.</h2>
-        <p class="rv tl" style="max-width: 640px; margin-top: 16px">Real arnis vocabulary, built into the controls. Corrections from practitioners are welcome. That's what this playtest is for.</p>
+        <p class="rv tl" style="max-width: 640px; margin-top: 16px" data-i18n="moves.lede">Totoong bokabularyo ng arnis, nakapaloob sa mga kontrol. Malugod naming tinatanggap ang pagtutuwid ng mga nagsasanay at guro ng arnis. Iyan ang layunin ng playtest na ito.</p>
         <ul class="moves">
-          <li class="move" data-img="assets/img/strike_chain.webp"><span class="n">01</span><h3>Angles 1·2·5<em>Light chain</em></h3><p>Forehand diagonal, backhand diagonal, thrust to the middle. Fast, low damage, and the base of everything else.</p><span class="key">L-click · X</span><img class="thumb" src="assets/img/strike_chain.webp" alt="" loading="lazy" /></li>
-          <li class="move" data-img="assets/img/b2_juegotodo.webp"><span class="n">02</span><h3>Punyo<em>Butt-end strike</em></h3><p>Get close and the light strike turns into a short punch with the butt of the stick. It interrupts enemy attacks.</p><span class="key">Light, up close</span><img class="thumb" src="assets/img/b2_juegotodo.webp" alt="" loading="lazy" /></li>
-          <li class="move" data-img="assets/img/b1_aftermath.webp"><span class="n">03</span><h3>Redonda<em>Circular finisher</em></h3><p>Three lights, then heavy: a continuous circular flurry that hits everyone close to you.</p><span class="key">L ×3 → R-click</span><img class="thumb" src="assets/img/b1_aftermath.webp" alt="" loading="lazy" /></li>
-          <li class="move" data-img="assets/img/scene3_parry.webp"><span class="n">04</span><h3>Sangga<em>Timed parry</em></h3><p>Meet the blade in the last 150 ms. A perfect sangga freezes time for a beat and opens a counter. A late one still costs you.</p><span class="key">Q · RB</span><img class="thumb" src="assets/img/scene3_parry.webp" alt="" loading="lazy" /></li>
-          <li class="move" data-img="assets/img/b4_cazador_dodge.webp"><span class="n">05</span><h3>Ilag<em>Triangle footwork</em></h3><p>A short angled sidestep, <i>tatsulok</i> footwork rather than a roll. Step off the line of a rifle shot or around a guard.</p><span class="key">Space · A</span><img class="thumb" src="assets/img/b4_cazador_dodge.webp" alt="" loading="lazy" /></li>
-          <li class="move" data-img="assets/img/scene4_agaw.webp"><span class="n">06</span><h3>Agaw<em>Disarm</em></h3><p>Right after a perfect sangga, strip the saber from his hand. Pick it up and fight with his steel for a while.</p><span class="key">R · RT</span><img class="thumb" src="assets/img/scene4_agaw.webp" alt="" loading="lazy" /></li>
+          <li class="move" data-img="assets/img/strike_chain.webp"><span class="n">01</span><h3 data-i18n="m1.h">Anggulo 1·2·5<em>Serye ng magaang palo</em></h3><p data-i18n="m1.p">Forehand na pahilis, backhand na pahilis, saksak sa gitna. Mabilis, mababa ang pinsala, at pundasyon ng lahat ng iba pa.</p><span class="key">L-click · X</span><img class="thumb" src="assets/img/strike_chain.webp" alt="" loading="lazy" /></li>
+          <li class="move" data-img="assets/img/b2_juegotodo.webp"><span class="n">02</span><h3 data-i18n="m2.h">Punyo<em>Palo ng puluhan</em></h3><p data-i18n="m2.p">Lumapit ka, at ang magaang palo ay nagiging maikling suntok gamit ang puluhan ng baston. Napuputol nito ang atake ng kaaway.</p><span class="key" data-i18n="m2.key">Magaan, malapitan</span><img class="thumb" src="assets/img/b2_juegotodo.webp" alt="" loading="lazy" /></li>
+          <li class="move" data-img="assets/img/b1_aftermath.webp"><span class="n">03</span><h3 data-i18n="m3.h">Redonda<em>Paikot na pantapos</em></h3><p data-i18n="m3.p">Tatlong magaan, saka mabigat: tuloy-tuloy at paikot na hampas na tumatama sa lahat ng malapit sa iyo.</p><span class="key">L ×3 → R-click</span><img class="thumb" src="assets/img/b1_aftermath.webp" alt="" loading="lazy" /></li>
+          <li class="move" data-img="assets/img/scene3_parry.webp"><span class="n">04</span><h3 data-i18n="m4.h">Sangga<em>Salag na may tiyempo</em></h3><p data-i18n="m4.p">Salubungin ang talim sa huling 150 ms. Pinahihinto ng perpektong sangga ang oras nang saglit at nagbubukas ng pagkakataong gumanti. Ang huling sangga, may kapalit pa rin.</p><span class="key">Q · RB</span><img class="thumb" src="assets/img/scene3_parry.webp" alt="" loading="lazy" /></li>
+          <li class="move" data-img="assets/img/b4_cazador_dodge.webp"><span class="n">05</span><h3 data-i18n="m5.h">Ilag<em>Tatsulok na yapak</em></h3><p data-i18n="m5.p">Maikli at pahilis na hakbang patagilid, yapak na <i>tatsulok</i> sa halip na gumulong. Umalis sa linya ng putok ng riple o lumigid sa depensa.</p><span class="key">Space · A</span><img class="thumb" src="assets/img/b4_cazador_dodge.webp" alt="" loading="lazy" /></li>
+          <li class="move" data-img="assets/img/scene4_agaw.webp"><span class="n">06</span><h3 data-i18n="m6.h">Agaw<em>Pag-agaw ng sandata</em></h3><p data-i18n="m6.p">Kasunod ng perpektong sangga, agawin ang sable sa kanyang kamay. Pulutin ito at lumaban gamit ang kanyang bakal nang ilang sandali.</p><span class="key">R · RT</span><img class="thumb" src="assets/img/scene4_agaw.webp" alt="" loading="lazy" /></li>
         </ul>
       </section>
 
       <!-- ============ ENEMIES ============ -->
       <section class="pad" id="kaaway" aria-labelledby="foes-title" style="padding-top: 0">
-        <div class="kicker rv">Kilalanin ang kaaway · Know the enemy</div>
-        <h2 class="h-lg rv ink" id="foes-title" style="margin-top: 18px">Read them<br />before they move.</h2>
+        <div class="kicker rv" data-i18n="foes.kicker">Kilalanin ang kaaway</div>
+        <h2 class="h-lg rv ink" id="foes-title" style="margin-top: 18px" data-i18n="foes.title">Basahin sila<br />bago sila gumalaw.</h2>
         <div class="foes">
           <article class="foe rv print">
-            <div class="foe-img"><img src="assets/img/scene3_parry.webp" alt="A Guardia Civil officer in striped uniform swings a saber." loading="lazy" style="object-position: 88% 40%" /><span class="foe-stamp">Sable</span></div>
+            <div class="foe-img"><img src="assets/img/scene3_parry.webp" alt="Isang opisyal ng Guardia Civil na naka-unipormeng may guhit, iwinawasiwas ang kanyang sable." data-i18n-attr="alt:gc.alt" loading="lazy" style="object-position: 88% 40%" /><span class="foe-stamp">Sable</span></div>
             <h3>Guardia Civil</h3>
-            <div class="arm">Saber · Close range</div>
+            <div class="arm" data-i18n="gc.arm">Sable · Malapitan</div>
             <dl>
-              <dt>Attacks</dt><dd>A quick slash, and a telegraphed overhead. Both can be parried.</dd>
-              <dt>Guard</dt><dd>Blocks light strikes from the front. Break it with a heavy, or flank him.</dd>
-              <dt>Tell</dt><dd>He flashes before he commits. That's your cue.</dd>
-              <dt>Agaw</dt><dd>Drops his saber when disarmed.</dd>
+              <dt data-i18n="dt.attacks">Atake</dt><dd data-i18n="gc.attacks">Isang mabilis na taga, at isang taga mula sa itaas na may malinaw na babala. Parehong nasasangga.</dd>
+              <dt data-i18n="dt.guard">Depensa</dt><dd data-i18n="gc.guard">Sinasalag niya ang magaang palo mula sa harap. Basagin ito ng mabigat na palo, o lumigid sa gilid niya.</dd>
+              <dt data-i18n="dt.tell">Senyales</dt><dd data-i18n="gc.tell">Kumikislap siya bago siya tumaga. Iyan ang hudyat mo.</dd>
+              <dt>Agaw</dt><dd data-i18n="gc.agaw">Nabibitawan niya ang kanyang sable kapag naagawan.</dd>
             </dl>
           </article>
           <article class="foe rv print">
-            <div class="foe-img"><img src="assets/img/b4_cazador_dodge.webp" alt="A Cazador rifleman fires down a rainy alley as Enteng dives aside." loading="lazy" style="object-position: 80% 40%" /><span class="foe-stamp">Rifle</span></div>
+            <div class="foe-img"><img src="assets/img/b4_cazador_dodge.webp" alt="Bumabaril ang isang Cazador sa basang eskinita habang tumatalon patagilid si Enteng." data-i18n-attr="alt:cz.alt" loading="lazy" style="object-position: 80% 40%" /><span class="foe-stamp" data-i18n="cz.stamp">Riple</span></div>
             <h3>Cazador</h3>
-            <div class="arm">Rifle · Long range</div>
+            <div class="arm" data-i18n="cz.arm">Riple · Malayuan</div>
             <dl>
-              <dt>Attacks</dt><dd>Aims for about 1.5 s with a visible aim line, then fires. Up close, a slow rifle-butt swing.</dd>
-              <dt>Counter</dt><dd><i>Ilag</i> through the shot, or put a cart or bamboo crate between you.</dd>
-              <dt>Opening</dt><dd>About 2 s of reloading after every shot. Close the distance.</dd>
+              <dt data-i18n="dt.attacks">Atake</dt><dd data-i18n="cz.attacks">Umaasinta nang mga 1.5 s na may nakikitang linya ng asinta, saka bumabaril. Kapag malapit, mabagal na hampas ng puluhan ng riple.</dd>
+              <dt data-i18n="dt.counter">Kontra</dt><dd data-i18n="cz.counter">Mag-<i>ilag</i> sa putok, o maglagay ng kariton o kahong kawayan sa pagitan ninyo.</dd>
+              <dt data-i18n="dt.opening">Pagkakataon</dt><dd data-i18n="cz.opening">Mga 2 s siyang nagkakarga ng bala pagkatapos ng bawat putok. Lapitan mo siya.</dd>
             </dl>
           </article>
         </div>
@@ -594,13 +610,13 @@
 
       <!-- ============ TRAILER ============ -->
       <section class="pad" id="trailer" aria-labelledby="film-title" style="padding-top: 0">
-        <div class="kicker rv">Panoorin · Watch</div>
-        <h2 class="h-lg rv ink" id="film-title" style="margin-top: 18px">Ang baston.</h2>
+        <div class="kicker rv" data-i18n="film.kicker">Panoorin</div>
+        <h2 class="h-lg rv ink" id="film-title" style="margin-top: 18px" data-i18n="film.title">Ang baston.</h2>
         <div class="film rv print" id="film">
           <video id="film-video" preload="none" playsinline controls poster="assets/img/scene4_agaw.webp">
             <source src="assets/video/trailer.mp4" type="video/mp4" />
           </video>
-          <button class="film-play" id="film-play" type="button" aria-label="Play trailer" data-hot><span>PLAY</span></button>
+          <button class="film-play" id="film-play" type="button" aria-label="I-play ang trailer" data-i18n-attr="aria-label:film.aria" data-hot><span data-i18n="film.play">NOOD</span></button>
         </div>
       </section>
 
@@ -610,20 +626,20 @@
         <div class="tear down" data-seed="29" aria-hidden="true"></div>
         <div class="enlist-grid">
           <div class="enlist-copy">
-            <div class="kicker rv">Sumali · Enlist</div>
-            <h2 class="h-lg rv ink" id="enlist-title" style="margin-top: 18px">Take the<br />oath.</h2>
-            <p class="rv">Katipunan members swore an oath and took a war name. Bonifacio's was <i>Maypagasa</i>, “there is hope.” Pick yours, sign up, and you can play right away in your browser.</p>
+            <div class="kicker rv" data-i18n="enlist.kicker">Sumali</div>
+            <h2 class="h-lg rv ink" id="enlist-title" style="margin-top: 18px" data-i18n="enlist.title">Gawin ang<br />panunumpa.</h2>
+            <p class="rv" data-i18n="enlist.lede">Nanumpa ang mga kasapi ng Katipunan at pumili ng sagisag, isang pangalan para sa digmaan. Ang kay Bonifacio ay <i>Maypagasa</i>. Pumili ka ng sa iyo, mag-sign up, at makapaglalaro ka agad sa iyong browser.</p>
             <ul class="reqs rv">
-              <li><span>Plays in</span><span>Chrome, Edge or Firefox · laptop / desktop</span></li>
-              <li><span>Controls</span><span>Keyboard + mouse, or a controller</span></li>
-              <li><span>Time</span><span>About 10–15 minutes</span></li>
-              <li><span>After</span><span>A short feedback form</span></li>
+              <li><span data-i18n="req1.k">Saan lalaruin</span><span data-i18n="req1.v">Chrome, Edge o Firefox · laptop / desktop</span></li>
+              <li><span data-i18n="req2.k">Kontrol</span><span data-i18n="req2.v">Keyboard at mouse, o controller</span></li>
+              <li><span data-i18n="req3.k">Tagal</span><span data-i18n="req3.v">Mga 10–15 minuto</span></li>
+              <li><span data-i18n="req4.k">Pagkatapos</span><span data-i18n="req4.v">Isang maikling form para sa iyong puna</span></li>
             </ul>
           </div>
 
           <div class="oath rv" id="oath">
             <div class="seal" aria-hidden="true">K·K·K<small>NANUMPA</small></div>
-            <div class="oath-head"><h3>Panunumpa</h3><span class="mono">Blg. <span id="oath-no">0001</span> · 1896</span></div>
+            <div class="oath-head"><h3 data-i18n="oath.title">Panunumpa</h3><span class="mono"><span data-i18n="oath.no">Blg.</span> <span id="oath-no">0001</span> · 1896</span></div>
 
             <form name="enlist" id="enlist-form" novalidate>
               <input type="hidden" name="form-name" value="enlist" />
@@ -631,55 +647,51 @@
               <input type="hidden" name="sangga_best_ms" id="f-best" />
               <input type="hidden" name="sangga_perfects" id="f-perf" />
 
-              <div class="oath-text" lang="fil">
-                Ako si
-                <label class="sr" for="f-name">Your full name</label>
-                <input class="w-name" id="f-name" name="name" type="text" autocomplete="name" placeholder="your full name" required />,
-                kilala sa digmaan bilang
-                <label class="sr" for="f-alias">Your war name (nickname)</label>
-                <input class="w-alias" id="f-alias" name="alias" type="text" maxlength="18" placeholder="war name" autocomplete="off" />.
-                <span class="en" lang="en">I am [name], known in battle as [war name].</span>
-                Abutin ako sa
+              <!-- Each run of words is its own span so the inputs can stay put when the language changes.
+                   The option VALUES never change, so the Sheet gets the same data in either language. -->
+              <div class="oath-text">
+                <span data-i18n="o.s1">Ako si</span>
+                <label class="sr" for="f-name" data-i18n="o.lbl.name">Iyong buong pangalan</label>
+                <input class="w-name" id="f-name" name="name" type="text" autocomplete="name" placeholder="buong pangalan" data-i18n-attr="placeholder:o.ph.name" required /><span data-i18n="o.s2">, kilala sa digmaan bilang</span>
+                <label class="sr" for="f-alias" data-i18n="o.lbl.alias">Iyong sagisag (palayaw)</label>
+                <input class="w-alias" id="f-alias" name="alias" type="text" maxlength="18" placeholder="sagisag" data-i18n-attr="placeholder:o.ph.alias" autocomplete="off" /><span data-i18n="o.s3">. Abutin ako sa</span>
                 <label class="sr" for="f-email">Email</label>
                 <input class="w-mail" id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="email@school.edu" required />
-                mula sa
-                <label class="sr" for="f-section">Class or section (optional)</label>
-                <input class="w-sec" id="f-section" name="section" type="text" placeholder="class / section" />.
-                <span class="en" lang="en">Reach me at [email], from [class / section].</span>
-                Sa arnis, ako ay
-                <label class="sr" for="f-exp">Arnis experience</label>
+                <span data-i18n="o.s4">mula sa</span>
+                <label class="sr" for="f-section" data-i18n="o.lbl.section">Klase o seksiyon (opsiyonal)</label>
+                <input class="w-sec" id="f-section" name="section" type="text" placeholder="klase / seksiyon" data-i18n-attr="placeholder:o.ph.section" /><span data-i18n="o.s5">. Sa arnis, ako ay</span>
+                <label class="sr" for="f-exp" data-i18n="o.lbl.exp">Karanasan sa arnis</label>
                 <select id="f-exp" name="arnis_experience">
-                  <option value="new">baguhan (new to it)</option>
-                  <option value="some">may kaunting alam (I know a little)</option>
-                  <option value="practitioner">nagsasanay (I train)</option>
-                  <option value="instructor">guro (I teach)</option>
+                  <option value="new" data-i18n="o.exp1">baguhan</option>
+                  <option value="some" data-i18n="o.exp2">may kaunting alam</option>
+                  <option value="practitioner" data-i18n="o.exp3">nagsasanay</option>
+                  <option value="instructor" data-i18n="o.exp4">guro</option>
                 </select>
-                at lalaban gamit ang
-                <label class="sr" for="f-input">Controls</label>
+                <span data-i18n="o.s6">at lalaban gamit ang</span>
+                <label class="sr" for="f-input" data-i18n="o.lbl.ctl">Kontrol</label>
                 <select id="f-input" name="controls">
-                  <option value="kbm">keyboard + mouse</option>
-                  <option value="controller">controller</option>
+                  <option value="kbm" data-i18n="o.ctl1">keyboard at mouse</option>
+                  <option value="controller" data-i18n="o.ctl2">controller</option>
                 </select>.
-                <span class="en" lang="en">In arnis I am [level], and I will fight with [controls].</span>
               </div>
 
-              <label class="consent"><input type="checkbox" name="consent" id="f-consent" value="yes" required /><span>I agree that my answers and playtest feedback can be used by my instructor for this class project. I can ask for them to be deleted at any time.</span></label>
+              <label class="consent"><input type="checkbox" name="consent" id="f-consent" value="yes" required /><span data-i18n="consent">Pumapayag akong magamit ng aking guro ang aking mga sagot at puna sa playtest para sa proyektong ito ng klase. Maaari kong ipabura ang mga ito anumang oras.</span></label>
 
               <div class="sig">
                 <div>
                   <div class="sig-line" id="sig" aria-hidden="true"></div>
-                  <div class="sig-cap">Lagda: your war name in baybayin, the old Tagalog script</div>
+                  <div class="sig-cap" data-i18n="sigcap">Lagda: ang iyong sagisag sa baybayin, ang lumang sulat ng Tagalog</div>
                 </div>
-                <button class="btn ink" type="submit" id="submit" data-hot><span>Seal the oath</span></button>
+                <button class="btn ink" type="submit" id="submit" data-hot><span data-i18n="submit">Tatakan ang panunumpa</span></button>
               </div>
               <p class="form-msg" id="form-msg" role="alert"></p>
             </form>
 
             <div class="after" id="after">
               <h4 id="after-title" lang="fil">Mabuhay, Katipunero.</h4>
-              <p>You're on the list. The street is ready when you are. Play on a computer, and keep this tab open for the feedback form after.</p>
+              <p data-i18n="after.p">Nasa listahan ka na. Handa na ang kalye kapag handa ka na. Maglaro sa computer, at huwag isara ang tab na ito para sa form ng puna pagkatapos.</p>
               <div class="row">
-                <a class="btn" href="play/" data-hot data-flood><span>Enter Tondo</span><span class="arr">→</span></a>
+                <a class="btn" href="play/" data-hot data-flood><span data-i18n="after.cta">Pumasok sa Tondo</span><span class="arr">→</span></a>
                 <span class="small">Q = sangga · Space = ilag · R = agaw</span>
               </div>
             </div>
@@ -692,35 +704,35 @@
       <section class="ai pad" id="ai" aria-labelledby="ai-title">
         <div class="ai-head">
           <div>
-            <div class="kicker rv">Pahayag sa AI · AI declaration · Proof of concept</div>
-            <h2 class="h-lg rv ink" id="ai-title" style="margin-top: 18px">How this<br />was made.</h2>
+            <div class="kicker rv" data-i18n="ai.kicker">Pahayag sa AI · Patunay ng konsepto</div>
+            <h2 class="h-lg rv ink" id="ai-title" style="margin-top: 18px" data-i18n="ai.title">Paano ito<br />ginawa.</h2>
           </div>
           <div class="rv">
-            <p>This build is a <b>proof of concept</b>. We used generative AI to make it quickly enough to put in your hands and find out whether the combat is fun. The AI-made pieces below are placeholders and starting points, not the finished game.</p>
-            <p style="margin-top: 14px">The game's UX is <b>human-centred</b>. Playtesting, fine-tuning and finalising the narrative, gameplay and illustration will be done by people, starting with your feedback.</p>
+            <p data-i18n="ai.p1">Ang build na ito ay isang <b>patunay ng konsepto</b>. Gumamit kami ng generative AI para mabuo ito nang mabilis, mailagay agad sa inyong mga kamay, at malaman kung masaya ang labanan. Ang mga bahaging gawa ng AI sa ibaba ay pansamantala at panimula lamang, hindi ang tapos na laro.</p>
+            <p style="margin-top: 14px" data-i18n="ai.p2">Ang UX ng laro ay <b>nakasentro sa tao</b>. Mga tao ang gagawa ng playtesting, pagpipino at pagbubuo ng salaysay, gameplay at ilustrasyon, simula sa inyong puna.</p>
           </div>
         </div>
-        <div class="ai-table rv" role="table" aria-label="Where AI was used, and the human role">
-          <div class="ai-row ai-th" role="row"><span role="columnheader">Part of the game</span><span role="columnheader">AI tool (proof of concept)</span><span role="columnheader">What the AI did</span><span role="columnheader">Human role: now → final</span></div>
-          <div class="ai-row" role="row"><span role="cell"><b>Illustrations</b> (story art, posters)</span><span role="cell">Gemini (Google)</span><span role="cell">Generated the ink-wash, noir and woodcut concept images</span><span role="cell">Art direction and selection now; final illustration by human artists</span></div>
-          <div class="ai-row" role="row"><span role="cell"><b>3D characters</b></span><span role="cell">Tripo3D; Mixamo</span><span role="cell">Turned concept art into 3D models; auto-rigged and animated them</span><span role="cell">Choosing and importing models now; final characters refined by people</span></div>
-          <div class="ai-row" role="row"><span role="cell"><b>Voice, music &amp; sound</b></span><span role="cell">ElevenLabs</span><span role="cell">Generated the trailer narration and music, and the hit, parry and ambience sounds</span><span role="cell">Picking and placing sounds now; tuned against playtest feedback</span></div>
-          <div class="ai-row" role="row"><span role="cell"><b>Narrative</b> (story &amp; characters)</span><span role="cell">Gemini (Google)</span><span role="cell">Drafted the backstory and character bible from the creator's premise</span><span role="cell">Premise and history now; the final narrative is written and approved by people</span></div>
-          <div class="ai-row" role="row"><span role="cell"><b>Arnis technique &amp; terms</b></span><span role="cell">AI (starting point)</span><span role="cell">Suggested the first moveset, strike angles and Tagalog terms</span><span role="cell">Fine-tuned and finalised by people: arnis experts, practitioners and the literature</span></div>
-          <div class="ai-row" role="row"><span role="cell"><b>Gameplay &amp; UX</b></span><span role="cell">—</span><span role="cell">—</span><span role="cell">Designed, playtested and tuned by people. This playtest is that step.</span></div>
-          <div class="ai-row" role="row"><span role="cell"><b>Code</b> (game + this website)</span><span role="cell">Claude (Anthropic), Claude Code</span><span role="cell">Wrote the Unity C# scripts, the web build and this site</span><span role="cell">Design rules, feel-testing and approval of every step</span></div>
-          <div class="ai-row" role="row"><span role="cell"><b>Logo &amp; page text</b></span><span role="cell">Claude (Anthropic)</span><span role="cell">Built the logo from the open-licence Big Shoulders font and drafted the copy</span><span role="cell">The struck-through logo idea, and final wording</span></div>
+        <div class="ai-table rv" role="table" aria-label="Kung saan ginamit ang AI, at ang papel ng tao" data-i18n-attr="aria-label:ai.table">
+          <div class="ai-row ai-th" role="row"><span role="columnheader" data-i18n="ai.th1">Bahagi ng laro</span><span role="columnheader" data-i18n="ai.th2">Kasangkapang AI (patunay ng konsepto)</span><span role="columnheader" data-i18n="ai.th3">Ginawa ng AI</span><span role="columnheader" data-i18n="ai.th4">Papel ng tao: ngayon → sa huli</span></div>
+          <div class="ai-row" role="row"><span role="cell" data-i18n="ai.r1a"><b>Mga ilustrasyon</b> (sining ng kuwento, poster)</span><span role="cell">Gemini (Google)</span><span role="cell" data-i18n="ai.r1c">Gumawa ng mga konseptong larawan na ink-wash, noir at woodcut</span><span role="cell" data-i18n="ai.r1d">Direksiyon sa sining at pagpili ngayon; ang huling ilustrasyon ay gagawin ng mga artistang tao</span></div>
+          <div class="ai-row" role="row"><span role="cell" data-i18n="ai.r2a"><b>Mga 3D na tauhan</b></span><span role="cell">Tripo3D; Mixamo</span><span role="cell" data-i18n="ai.r2c">Ginawang 3D model ang konseptong sining; awtomatikong ni-rig at in-animate ang mga ito</span><span role="cell" data-i18n="ai.r2d">Pagpili at pag-import ng mga model ngayon; pipinuhin ng mga tao ang huling mga tauhan</span></div>
+          <div class="ai-row" role="row"><span role="cell" data-i18n="ai.r3a"><b>Boses, musika at tunog</b></span><span role="cell">ElevenLabs</span><span role="cell" data-i18n="ai.r3c">Gumawa ng narasyon at musika ng trailer, at ng mga tunog ng palo, sangga at paligid</span><span role="cell" data-i18n="ai.r3d">Pagpili at paglalagay ng mga tunog ngayon; iaangkop batay sa puna sa playtest</span></div>
+          <div class="ai-row" role="row"><span role="cell" data-i18n="ai.r4a"><b>Salaysay</b> (kuwento at mga tauhan)</span><span role="cell">Gemini (Google)</span><span role="cell" data-i18n="ai.r4c">Nag-draft ng pinagmulan ng kuwento at ng gabay sa mga tauhan mula sa ideya ng lumikha</span><span role="cell" data-i18n="ai.r4d">Ideya at kasaysayan ngayon; isusulat at aaprubahan ng mga tao ang huling salaysay</span></div>
+          <div class="ai-row" role="row"><span role="cell" data-i18n="ai.r5a"><b>Teknik at mga termino ng arnis</b></span><span role="cell" data-i18n="ai.r5b">AI (panimula)</span><span role="cell" data-i18n="ai.r5c">Nagmungkahi ng unang hanay ng galaw, mga anggulo ng palo at mga terminong Tagalog</span><span role="cell" data-i18n="ai.r5d">Pipinuhin at bubuuin ng mga tao: mga dalubhasa at nagsasanay ng arnis, at ang mga sanggunian</span></div>
+          <div class="ai-row" role="row"><span role="cell" data-i18n="ai.r6a"><b>Gameplay at UX</b></span><span role="cell">—</span><span role="cell">—</span><span role="cell" data-i18n="ai.r6d">Dinisenyo, sinubok at pinino ng mga tao. Ang playtest na ito ang hakbang na iyon.</span></div>
+          <div class="ai-row" role="row"><span role="cell" data-i18n="ai.r7a"><b>Code</b> (ang laro at ang website na ito)</span><span role="cell">Claude (Anthropic), Claude Code</span><span role="cell" data-i18n="ai.r7c">Isinulat ang mga Unity C# script, ang web build at ang site na ito</span><span role="cell" data-i18n="ai.r7d">Mga tuntunin sa disenyo, pagsubok sa pakiramdam ng laro, at pag-apruba sa bawat hakbang</span></div>
+          <div class="ai-row" role="row"><span role="cell" data-i18n="ai.r8a"><b>Logo at teksto ng pahina</b></span><span role="cell">Claude (Anthropic)</span><span role="cell" data-i18n="ai.r8c">Binuo ang logo mula sa open-licence na font na Big Shoulders, nag-draft ng teksto at ng salin nito sa Tagalog</span><span role="cell" data-i18n="ai.r8d">Ang ideya ng logong may guhit, at ang huling pananalita</span></div>
         </div>
-        <p class="ai-note mono rv">Your sign-up and feedback go only to the instructor's Google Sheet. They are not sent to any AI tool.</p>
+        <p class="ai-note mono rv" data-i18n="ai.note">Ang iyong sign-up at puna ay napupunta lamang sa Google Sheet ng guro. Hindi ito ipinapadala sa anumang AI tool.</p>
       </section>
     </main>
 
     <footer>
-      <div class="foot-big" aria-hidden="true">Isang baston.</div>
+      <div class="foot-big" aria-hidden="true" data-i18n="foot.big">Isang baston.</div>
       <div class="foot-row">
-        <span>Katipunero · combat prototype, playtest build · made in Unity 6</span>
-        <span>Arnis has been the national martial art and sport of the Philippines since 2009 (RA 9850).</span>
-        <span><a href="play/" data-flood>Play</a> · <a href="feedback/">Feedback</a> · <a href="#ai">AI declaration</a></span>
+        <span data-i18n="foot.made">Katipunero · prototype ng labanan, build para sa playtest · gawa sa Unity 6</span>
+        <span data-i18n="foot.arnis">Ang arnis ang pambansang sining ng pakikipaglaban at isport ng Pilipinas mula pa noong 2009 (RA 9850).</span>
+        <span><a href="play/" data-flood data-i18n="foot.play">Laruin</a> · <a href="feedback/" data-i18n="foot.feedback">Puna</a> · <a href="#ai" data-i18n="foot.ai">Pahayag sa AI</a></span>
       </div>
     </footer>
 
@@ -728,6 +740,7 @@
 
     <script src="assets/js/config.js"></script>
     <script src="assets/js/collect.js"></script>
+    <script src="assets/js/i18n.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script>
@@ -736,6 +749,8 @@
         var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         var hasGsap = typeof window.gsap !== "undefined" && typeof window.ScrollTrigger !== "undefined";
         var $ = function (s) { return document.querySelector(s); };
+        // Runtime strings in the current language (see assets/js/i18n.js).
+        var T = function (k, v) { return window.I18N ? window.I18N.t(k, v) : k; };
         var store = {
           get: function (k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } },
           set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
@@ -756,7 +771,7 @@
           soundOn = !soundOn;
           sndBtn.classList.toggle("on", soundOn);
           sndBtn.setAttribute("aria-pressed", String(soundOn));
-          sndBtn.querySelector("span").textContent = soundOn ? "Sound on" : "Sound off";
+          sndBtn.querySelector("span").textContent = T(soundOn ? "sndOn" : "sndOff");
           if (soundOn) { amb.volume = 0.25; amb.play().catch(function () {}); play("Swing", 0.5); } else amb.pause();
         });
 
@@ -920,6 +935,18 @@
         // Coming back with the browser's Back button: clear the ink.
         addEventListener("pageshow", function () { floodC.setAttribute("r", 0); flood.classList.remove("on"); });
 
+        /* ---------- HEADER: solid bar after the hero; hides on scroll down, returns on scroll up ---------- */
+        var topBar = document.querySelector(".top"), lastY = scrollY;
+        function updateTop() {
+          var y = scrollY, past = y > innerHeight * 0.6;
+          topBar.classList.toggle("solid", y > 40);
+          if (!past || y < lastY - 4) topBar.classList.remove("away");
+          else if (y > lastY + 4) topBar.classList.add("away");
+          lastY = y;
+        }
+        addEventListener("scroll", updateTop, { passive: true });
+        updateTop();
+
         /* ---------- FOOTER: carved letters fill with ink ---------- */
         var footBig = document.querySelector(".foot-big");
         addEventListener("scroll", function () {
@@ -936,11 +963,17 @@
 
         /* ---------- MANIFESTO: words light up as you scroll ---------- */
         var man = $("#manifesto");
-        var redWords = { "forbade": 1, "blade": 1, "blades.": 1, "stick.": 1 };
-        man.innerHTML = man.textContent.split(" ").map(function (w) {
-          return '<span class="w' + (redWords[w] ? " red" : "") + '">' + w + "</span>";
-        }).join(" ");
-        var words = man.querySelectorAll(".w");
+        // Words inked red, in both languages
+        var redWords = { "forbade": 1, "blade": 1, "blades.": 1, "stick.": 1, "Ipinagbawal": 1, "patalim": 1, "baston.": 1 };
+        var words = [];
+        // Re-run whenever the language changes (the switcher puts back plain text first)
+        function splitManifesto() {
+          man.innerHTML = man.textContent.trim().split(/\s+/).map(function (w) {
+            return '<span class="w' + (redWords[w] ? " red" : "") + '">' + w + "</span>";
+          }).join(" ");
+          words = man.querySelectorAll(".w");
+        }
+        splitManifesto();
         function lightWords() {
           var r = man.getBoundingClientRect();
           var p = (innerHeight * 0.85 - r.top) / (r.height + innerHeight * 0.35);
@@ -1016,7 +1049,7 @@
         function nextRound() {
           resetVisuals();
           round++;
-          roundEl.textContent = "Strike " + round + " / " + ROUNDS;
+          roundEl.textContent = T("strike", { n: round, t: ROUNDS });
           state = "wait";
           // short random pause so the start of the wind-up isn't predictable either
           waitTimer = setTimeout(function () {
@@ -1047,10 +1080,10 @@
           cancelAnimationFrame(raf); clearTimeout(waitTimer);
           var before = t == null ? null : impactAt - t; // ms before impact (negative = after)
           var kind, label, sub;
-          if (t === -9999 || (before != null && before > TELEGRAPH)) { kind = "early"; label = "Masyadong maaga"; sub = "Too early. He read you and held the strike."; }
-          else if (before == null) { kind = "hit"; label = "Tinamaan"; sub = "Hit. The blade landed."; }
-          else if (before <= PERFECT) { kind = "perfect"; label = "Perpekto"; sub = "Perfect sangga · " + Math.max(0, Math.round(before)) + " ms before impact"; }
-          else { kind = "good"; label = "Sangga"; sub = "Blocked, " + Math.round(before) + " ms early. Chip damage."; }
+          if (t === -9999 || (before != null && before > TELEGRAPH)) { kind = "early"; label = T("earlyL"); sub = T("earlyS"); }
+          else if (before == null) { kind = "hit"; label = T("hitL"); sub = T("hitS"); }
+          else if (before <= PERFECT) { kind = "perfect"; label = T("perfectL"); sub = T("perfectS", { ms: Math.max(0, Math.round(before)) }); }
+          else { kind = "good"; label = T("goodL"); sub = T("goodS", { ms: Math.round(before) }); }
           state = "result";
           results.push({ kind: kind, ms: before == null ? null : Math.round(before) });
           pips[round - 1].className = kind;
@@ -1089,20 +1122,33 @@
           state = "done";
           resetVisuals();
           arena.classList.remove("running");
-          roundEl.textContent = "Tapos";
           var perf = results.filter(function (r) { return r.kind === "perfect"; });
           var parried = results.filter(function (r) { return r.kind === "perfect" || r.kind === "good"; });
           var best = parried.length ? Math.min.apply(null, parried.map(function (r) { return Math.max(0, r.ms); })) : null;
-          var title = perf.length >= 4 ? "Maestro." : perf.length >= 2 ? "Handa ka na." : "Tondo will teach you.";
-          summary.innerHTML = "<b>" + perf.length + " / " + ROUNDS + "</b>perfect sangga" + (best != null ? " · closest: " + best + " ms before impact" : "") + "<br>" + title +
-            '<br><a href="#enlist" style="color:var(--lamp)">Take the oath and fight for real →</a>';
+          lastSummary = { perfects: perf.length, best: best };
+          renderTrialText();
           summary.style.display = "block";
-          startBtn.textContent = "Again"; startBtn.style.display = "inline-block";
+          startBtn.style.display = "inline-block";
           var prev = store.get("katipunero.trial") || {};
           var rec = { perfects: Math.max(perf.length, prev.perfects || 0), best: best == null ? prev.best : prev.best == null ? best : Math.min(best, prev.best) };
           store.set("katipunero.trial", rec);
           fillTrialFields(rec);
         }
+        /* Labels that sit still between rounds, so they can be redrawn in the other language. */
+        var lastSummary = null;
+        function renderTrialText() {
+          if (state === "idle") { roundEl.textContent = T("ready"); startBtn.textContent = T("start"); }
+          if (state === "done") {
+            roundEl.textContent = T("done");
+            startBtn.textContent = T("again");
+            var p = lastSummary.perfects;
+            var title = p >= 4 ? T("sumT1") : p >= 2 ? T("sumT2") : T("sumT3");
+            summary.innerHTML = "<b>" + p + " / " + ROUNDS + "</b>" + T("sumPerfect") + (lastSummary.best != null ? T("sumClosest", { ms: lastSummary.best }) : "") + "<br>" + title +
+              '<br><a href="#enlist" style="color:var(--lamp)">' + T("sumCta") + "</a>";
+          }
+          if (state === "wait" || state === "windup" || state === "result") roundEl.textContent = T("strike", { n: round, t: ROUNDS });
+        }
+        renderTrialText();
         function fillTrialFields(rec) {
           if (!rec) return;
           $("#f-perf").value = rec.perfects != null ? rec.perfects + "/5" : "";
@@ -1171,21 +1217,32 @@
           e.preventDefault();
           msg.textContent = "";
           var bad = [];
-          [["#f-name", "your name"], ["#f-email", "a valid email"]].forEach(function (f) {
+          [["#f-name", T("mName")], ["#f-email", T("mEmail")]].forEach(function (f) {
             var el = $(f[0]); var ok = el.value.trim() && el.checkValidity(); el.setAttribute("aria-invalid", ok ? "false" : "true"); if (!ok) bad.push(f[1]);
           });
-          if (!$("#f-consent").checked) bad.push("your consent");
-          if (bad.length) { msg.textContent = "Kulang pa: we still need " + bad.join(", ") + "."; return; }
+          if (!$("#f-consent").checked) bad.push(T("mConsent"));
+          if (bad.length) { msg.textContent = T("missing", { list: bad.join(", ") }); return; }
           if (!alias.value.trim()) alias.value = nameIn.value.trim().split(" ")[0];
-          var btn = $("#submit"); btn.disabled = true; btn.querySelector("span").textContent = "Sealing…";
+          var btn = $("#submit"); btn.disabled = true; btn.querySelector("span").textContent = T("sealing");
           window.sendToSheet(form).then(function () {
             var who = alias.value.trim();
             store.set("katipunero.enlisted", { alias: who, at: Date.now() });
             showSealed(who, false);
           }).catch(function () {
-            btn.disabled = false; btn.querySelector("span").textContent = "Seal the oath";
-            msg.textContent = "Couldn't send. Check your connection and try again.";
+            btn.disabled = false; btn.querySelector("span").textContent = T("submit");
+            msg.textContent = T("sendFail");
           });
+        });
+
+        /* ---------- LANGUAGE SWITCH: redraw what the script built itself ---------- */
+        if (window.I18N) window.I18N.onChange(function () {
+          sndBtn.querySelector("span").textContent = T(soundOn ? "sndOn" : "sndOff");
+          splitManifesto();
+          if (!reduced) lightWords();
+          renderTrialText();
+          msg.textContent = "";
+          updateSig();
+          if (window.ScrollTrigger) ScrollTrigger.refresh(); // text length changed, so pinned sections move
         });
       })();
     </script>
