@@ -191,19 +191,19 @@
   /* Strings the page script builds at runtime. {n}, {ms} etc. are filled in. */
   var UI = {
     fil: {
-      sndOff: "Walang tunog", sndOn: "May tunog",
-      ready: "Handa", strike: "Taga {n} / {t}", done: "Tapos",
-      start: "Simulan", again: "Ulitin",
-      earlyL: "Masyadong maaga", earlyS: "Nabasa ka niya at pinigil ang taga.",
-      hitL: "Tinamaan", hitS: "Tumama ang talim.",
-      perfectL: "Perpekto", perfectS: "Perpektong sangga · {ms} ms bago tumama",
-      goodL: "Sangga", goodS: "Nasalag, {ms} ms na maaga. May kaunting pinsala.",
-      sumPerfect: "perpektong sangga", sumClosest: " · pinakamalapit: {ms} ms bago tumama",
+      sndOff: "Sound off", sndOn: "Sound on",
+      ready: "Ready", strike: "Taga {n} / {t}", done: "Tapos",
+      start: "Simulan", again: "Ulit",
+      earlyL: "Masyadong maaga", earlyS: "Nabasa ka niya, kaya pinigil niya ang taga.",
+      hitL: "Tinamaan ka", hitS: "Tumama ang talim.",
+      perfectL: "Perfect", perfectS: "Perfect na sangga · {ms} ms bago tumama",
+      goodL: "Sangga", goodS: "Nasalag, {ms} ms na maaga. May kaunting damage.",
+      sumPerfect: "perfect na sangga", sumClosest: " · pinakamalapit: {ms} ms bago tumama",
       sumT1: "Maestro.", sumT2: "Handa ka na.", sumT3: "Tuturuan ka ng Tondo.",
-      sumCta: "Manumpa at lumaban nang totohanan →",
-      missing: "Kulang pa: {list}.", mName: "ang iyong pangalan", mEmail: "isang wastong email", mConsent: "ang iyong pahintulot",
+      sumCta: "Manumpa at lumaban nang totoo →",
+      missing: "Kulang pa: {list}.", mName: "pangalan mo", mEmail: "valid na email", mConsent: "pagpayag mo",
       submit: "Tatakan ang panunumpa", sealing: "Tinatatakan…",
-      sendFail: "Hindi naipadala. Tingnan ang iyong koneksiyon at subukang muli."
+      sendFail: "Hindi naipadala. I-check ang connection mo at subukan ulit."
     },
     en: {
       sndOff: "Sound off", sndOn: "Sound on",
