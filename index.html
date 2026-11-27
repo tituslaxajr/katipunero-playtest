@@ -4,10 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Katipunero — Tondo, 1896 · Playtest</title>
-    <meta name="description" content="A third-person arnis action game set in Tondo, Manila, August 1896. One rattan stick against the Guardia Civil. Join the combat-prototype playtest and play it in your browser." />
+    <meta name="description" content="He never joined the Katipunan. Tondo decided he had. A third-person arnis action game set in Tondo, Manila, August 1896. Free 10-minute browser playtest." />
+    <link rel="canonical" href="https://tituslaxajr.github.io/katipunero-playtest/" />
+    <!-- Link previews (Messenger, WhatsApp, Facebook, X, Discord): image must be an absolute URL -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tituslaxajr.github.io/katipunero-playtest/" />
     <meta property="og:title" content="Katipunero — Tondo, 1896" />
     <meta property="og:description" content="He never joined the Katipunan. Tondo decided he had. Free browser playtest." />
-    <meta property="og:image" content="assets/img/b1_aftermath.webp" />
+    <meta property="og:image" content="https://tituslaxajr.github.io/katipunero-playtest/assets/img/og-card.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The Katipunero logo over an ink illustration of Enteng holding a rattan stick in a rainy Tondo alley." />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#0c0a08" />
     <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
@@ -43,6 +51,9 @@
       a { color: inherit; }
       ::selection { background: var(--crimson); color: var(--paper); }
       .sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+      /* Skip link: hidden until a keyboard user tabs to it */
+      .skip { position: fixed; left: 12px; top: -60px; z-index: 200; background: var(--paper); color: var(--ink); font-family: var(--mono); font-size: 13px; padding: 10px 14px; text-decoration: none; }
+      .skip:focus { top: 12px; }
       :focus-visible { outline: 2px solid var(--lamp); outline-offset: 3px; }
 
       .mono { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
@@ -383,6 +394,7 @@
     </style>
   </head>
   <body>
+    <a class="skip" href="#kuwento">Skip to content</a>
     <!-- Shared ink filters (same "rough edge" recipe as the art pack's SVGs) -->
     <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
       <defs>
@@ -400,7 +412,7 @@
     <svg class="flood" id="flood" aria-hidden="true"><circle id="flood-c" cx="0" cy="0" r="0" fill="#0c0a08" filter="url(#blot)" /></svg>
     <div class="grain" aria-hidden="true"></div>
     <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor-ring"></div><div class="cursor-dot"></div></div>
-    <div class="peek" id="peek" aria-hidden="true"><img alt="" id="peek-img" src="assets/img/scene3_parry.webp" /></div>
+    <div class="peek" id="peek" aria-hidden="true"><img alt="" id="peek-img" src="assets/img/scene3_parry.webp" loading="lazy" /></div>
 
     <header class="top">
       <a class="brand" href="#top"><img src="assets/img/logo-mono-white.svg" alt="Katipunero" /></a>
@@ -422,7 +434,7 @@
         <div class="hero-img"><img src="assets/img/b1_aftermath.webp" alt="Enteng stands in a lamp-lit Tondo alley among fallen Guardia Civil, a rattan stick in hand." fetchpriority="high" /></div>
         <div class="hero-meta">
           <div class="kicker">Free browser playtest · 10 minutes</div>
-          <p class="tag">Hindi siya sumapi.<br />Siya ang naging mitsa.</p>
+          <p class="tag" lang="fil">Hindi siya sumapi.<br />Siya ang naging mitsa.</p>
           <p class="tag-en">He never joined the Katipunan. Tondo decided he had. A third-person arnis action game, Tondo, Manila, August 1896.</p>
           <div class="hero-ctas">
             <a class="btn" href="#enlist" data-hot><span>Decide for yourself</span><span class="arr">→</span></a>
@@ -510,7 +522,7 @@
             </ul>
           </div>
           <div class="arena rv" id="arena" role="application" aria-label="Parry trial. Press Q or Space when the ring flashes white." tabindex="0">
-            <img class="arena-bg" src="assets/img/scene3_parry.webp" alt="" />
+            <img class="arena-bg" src="assets/img/scene3_parry.webp" alt="" loading="lazy" />
             <svg class="rig" viewBox="0 0 400 300" aria-hidden="true">
               <circle class="target" cx="200" cy="150" r="34" />
               <circle class="ring" id="ring" cx="200" cy="150" r="140" />
@@ -619,21 +631,21 @@
               <input type="hidden" name="sangga_best_ms" id="f-best" />
               <input type="hidden" name="sangga_perfects" id="f-perf" />
 
-              <div class="oath-text">
+              <div class="oath-text" lang="fil">
                 Ako si
                 <label class="sr" for="f-name">Your full name</label>
                 <input class="w-name" id="f-name" name="name" type="text" autocomplete="name" placeholder="your full name" required />,
                 kilala sa digmaan bilang
                 <label class="sr" for="f-alias">Your war name (nickname)</label>
                 <input class="w-alias" id="f-alias" name="alias" type="text" maxlength="18" placeholder="war name" autocomplete="off" />.
-                <span class="en">I am [name], known in battle as [war name].</span>
+                <span class="en" lang="en">I am [name], known in battle as [war name].</span>
                 Abutin ako sa
                 <label class="sr" for="f-email">Email</label>
                 <input class="w-mail" id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="email@school.edu" required />
                 mula sa
                 <label class="sr" for="f-section">Class or section (optional)</label>
                 <input class="w-sec" id="f-section" name="section" type="text" placeholder="class / section" />.
-                <span class="en">Reach me at [email], from [class / section].</span>
+                <span class="en" lang="en">Reach me at [email], from [class / section].</span>
                 Sa arnis, ako ay
                 <label class="sr" for="f-exp">Arnis experience</label>
                 <select id="f-exp" name="arnis_experience">
@@ -648,7 +660,7 @@
                   <option value="kbm">keyboard + mouse</option>
                   <option value="controller">controller</option>
                 </select>.
-                <span class="en">In arnis I am [level], and I will fight with [controls].</span>
+                <span class="en" lang="en">In arnis I am [level], and I will fight with [controls].</span>
               </div>
 
               <label class="consent"><input type="checkbox" name="consent" id="f-consent" value="yes" required /><span>I agree that my answers and playtest feedback can be used by my instructor for this class project. I can ask for them to be deleted at any time.</span></label>
@@ -664,7 +676,7 @@
             </form>
 
             <div class="after" id="after">
-              <h4 id="after-title">Katipunero ka na.</h4>
+              <h4 id="after-title" lang="fil">Katipunero ka na.</h4>
               <p>Now you are one, whether you meant to be or not. The street is ready when you are. Play on a computer, and keep this tab open for the feedback form after.</p>
               <div class="row">
                 <a class="btn" href="play/" data-hot data-flood><span>Enter Tondo</span><span class="arr">→</span></a>
@@ -1083,7 +1095,7 @@
           var best = parried.length ? Math.min.apply(null, parried.map(function (r) { return Math.max(0, r.ms); })) : null;
           var title = perf.length >= 4 ? "Maestro." : perf.length >= 2 ? "Handa ka na." : "Tondo will teach you.";
           summary.innerHTML = "<b>" + perf.length + " / " + ROUNDS + "</b>perfect sangga" + (best != null ? " · closest: " + best + " ms before impact" : "") + "<br>" + title +
-            '<br><a href="#enlist" style="color:var(--lamp)">Take the oath and fight for real →</a>';
+            '<br><a href="#enlist" style="color:var(--lamp)">Sign the oath and fight for real →</a>';
           summary.style.display = "block";
           startBtn.textContent = "Again"; startBtn.style.display = "inline-block";
           var prev = store.get("katipunero.trial") || {};
