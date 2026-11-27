@@ -6,5 +6,5 @@
    While it's empty, the forms work in "preview mode": nothing is sent.
    ============================================================ */
 window.KATIPUNERO = {
-  SHEET_URL: "",
+  SHEET_URL: "https://script.google.com/macros/s/AKfycbwswdYB_kyTyx69VZfgZ726aaTOI9L9ivhbRj3bVrIsZQiTQSNoIZKosu-S_ibstgs2/exec",
 };
