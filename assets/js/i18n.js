@@ -192,7 +192,7 @@
     "hist.p": "<b>Katipunero</b> is fiction. Enteng, his family and his story are invented, but they are set in a real time and place: Tondo at the outbreak of the Philippine Revolution of 1896. It is a game, not a history lesson.",
     "hist.l1": "<b>Real people</b>The Katipunan, Andres Bonifacio and his nom de guerre <i>Maypagasa</i> are real. The scenes in the game did not happen, and it makes no claim about what real people did or thought.",
     "hist.l2": "<b>The blade ban</b>A well-known story in arnis says the Spanish banned blades, so the techniques were hidden in the stick and in dance. Historians still debate it. We use it as the legend of the game's world, not as settled history.",
-    "hist.l3": "<b>The enemies</b>The Guardia Civil and the Cazadores are based on real colonial forces, simplified for play. They stand for a system of colonial rule, not for a people or a nation.",
+    "hist.l3": "<b>The enemies</b>The Guardia Civil and the Cazadores are based on real colonial forces, simplified for play. One liberty: Spain's Cazador battalions only reached Manila in October 1896, two months after Enteng's story. We bring them in early as the rifleman enemy. They stand for a system of colonial rule, not for a people or a nation.",
     "hist.l4": "<b>Simplified details</b>Arnis technique, uniforms, weapons and the street are simplified for this prototype, and some early details came from AI. If something is wrong, tell us in the feedback form. That is what the playtest is for.",
     "hist.why": "Why we made this",
     "hist.teaser": "What is real and what is fiction, plus books to read after you play.",
