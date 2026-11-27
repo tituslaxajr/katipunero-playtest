@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="fil">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kasaysayan · Katipunero</title>
+    <meta name="description" content="Historical note for Katipunero: what is real, what is fiction, and where to learn more about the Philippine Revolution and arnis." />
+    <meta name="theme-color" content="#0c0a08" />
+    <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=IM+Fell+English:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+Tagalog&display=swap" rel="stylesheet" />
+    <style>
+      /* Same tokens and section styles as the landing page (copied from index.html). */
+      :root {
+        --ink: #0c0a08;
+        --ink-2: #16120e;
+        --paper: #efe4cf;
+        --paper-2: #e2d3b6;
+        --paper-dim: #a99c86;
+        --crimson: #c8202a;
+        --crimson-hi: #e8343d;
+        --lamp: #e39a3b;
+        --line: rgba(239, 228, 207, 0.14);
+        --display: "Big Shoulders Display", Impact, "Arial Narrow", sans-serif;
+        --serif: "IM Fell English", Georgia, serif;
+        --mono: "IBM Plex Mono", ui-monospace, monospace;
+        --baybayin: "Noto Sans Tagalog", serif;
+        --gutter: clamp(16px, 4vw, 56px);
+        --ease: cubic-bezier(0.7, 0, 0.2, 1);
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html { background: var(--ink); color: var(--paper); -webkit-text-size-adjust: 100%; }
+      body { background: var(--ink); color: var(--paper); font-family: var(--serif); font-size: 19px; line-height: 1.5; overflow-x: hidden; }
+      img, video { display: block; max-width: 100%; }
+      a { color: inherit; }
+      ::selection { background: var(--crimson); color: var(--paper); }
+      .sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+      /* Skip link: hidden until a keyboard user tabs to it */
+      .skip { position: fixed; left: 12px; top: -60px; z-index: 200; background: var(--paper); color: var(--ink); font-family: var(--mono); font-size: 13px; padding: 10px 14px; text-decoration: none; }
+      .skip:focus { top: 12px; }
+      :focus-visible { outline: 2px solid var(--lamp); outline-offset: 3px; }
+
+      .mono { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
+      .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--crimson-hi); display: flex; align-items: center; gap: 12px; }
+      .kicker::before { content: ""; width: 28px; height: 2px; background: currentColor; }
+      .h-xl { font-family: var(--display); font-weight: 900; text-transform: uppercase; line-height: 0.86; letter-spacing: -0.005em; font-size: clamp(56px, 11vw, 190px); }
+      .h-lg { font-family: var(--display); font-weight: 900; text-transform: uppercase; line-height: 0.9; font-size: clamp(44px, 7vw, 112px); }
+      .tl { font-style: italic; color: var(--paper-dim); }
+      .crim { color: var(--crimson-hi); }
+
+      .sub-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px var(--gutter); border-bottom: 1px solid var(--line); position: sticky; top: 0; background: rgba(12,10,8,0.94); z-index: 10; }
+      .sub-top nav { display: flex; align-items: center; gap: clamp(14px, 2.4vw, 28px); }
+      .sub-top a, .sub-top button { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; color: var(--paper); background: none; border: 0; cursor: pointer; }
+      .sub-top a:hover { text-decoration: line-through; text-decoration-thickness: 2px; }
+      .brand img { height: 30px; width: auto; display: block; }
+      .lang { display: inline-flex; border: 1px solid var(--paper); }
+      .sub-top .lang button { padding: 7px 9px; line-height: 1; }
+      .sub-top .lang button[aria-pressed="true"] { background: var(--paper); color: var(--ink); cursor: default; }
+      .pad { padding: clamp(60px, 9vw, 120px) var(--gutter); }
+      .ai, .hist { padding-top: clamp(60px, 9vw, 120px); }
+      .btn { --bg: var(--crimson); position: relative; display: inline-flex; align-items: center; gap: 12px; font-family: var(--display); font-weight: 800; font-size: 20px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--paper); background: var(--bg); border: 1px solid var(--bg); padding: 14px 26px; cursor: pointer; overflow: hidden; }
+      /* Hover = an ink blot that spreads from where the pointer entered (rough edge via SVG filter) */
+      .btn::after { content: ""; position: absolute; left: var(--bx, 50%); top: var(--by, 50%); width: 280%; aspect-ratio: 1; background: var(--paper); border-radius: 58% 42% 61% 39% / 47% 58% 42% 53%; transform: translate(-50%, -50%) scale(0) rotate(0deg); transition: transform 0.6s var(--ease); z-index: 0; filter: url(#rough-md); }
+      .btn:hover::after { transform: translate(-50%, -50%) scale(1) rotate(40deg); }
+      .btn span { position: relative; z-index: 1; transition: color 0.3s; }
+      .btn:hover span { color: var(--ink); }
+      .btn.ghost { --bg: transparent; border-color: rgba(239,228,207,0.45); }
+      .btn .arr { font-family: var(--mono); font-size: 16px; }
+      .sub-foot { padding: 40px var(--gutter) 30px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; color: var(--paper-dim); font-size: 15px; }
+      .sub-foot a { color: var(--paper); }
+      /* ============ AI DECLARATION ============ */
+      .ai { padding-top: clamp(120px, 14vw, 190px); }
+      .ai-head { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; }
+      .ai-head p { color: var(--paper-dim); max-width: 560px; }
+      .ai-head p b { color: var(--paper); font-weight: normal; font-style: italic; }
+      .ai-table { margin-top: 48px; border-top: 1px solid var(--line); font-size: 16px; }
+      .ai-row { display: grid; grid-template-columns: 1.1fr 1fr 1.5fr 1.5fr; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+      .ai-row span { color: var(--paper-dim); }
+      .ai-row span:first-child { color: var(--paper); }
+      .ai-row b { font-family: var(--display); font-weight: 800; font-size: 20px; letter-spacing: 0.03em; text-transform: uppercase; }
+      .ai-th span { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--crimson-hi) !important; }
+      .ai-note { margin-top: 22px; color: var(--paper-dim); text-transform: none; letter-spacing: 0.04em; }
+      .hist { padding-top: clamp(100px, 12vw, 160px); }
+      .hist-list { margin-top: 44px; display: grid; grid-template-columns: 1fr 1fr; gap: 0 48px; border-top: 1px solid var(--line); list-style: none; padding: 0; }
+      .hist-list li { padding: 20px 0; border-bottom: 1px solid var(--line); color: var(--paper-dim); font-size: 16px; }
+      .hist-list b { display: block; margin-bottom: 6px; font-family: var(--display); font-weight: 800; font-size: 20px; letter-spacing: 0.03em; text-transform: uppercase; color: var(--paper); }
+      @media (max-width: 860px) { .hist-list { grid-template-columns: 1fr; } }
+      .hist-more { margin-top: 56px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px 48px; }
+      .hist-more h3 { font-family: var(--mono); font-size: 11px; font-weight: normal; letter-spacing: 0.14em; text-transform: uppercase; color: var(--crimson-hi); margin: 0 0 14px; }
+      .hist-intent p { font-size: clamp(20px, 2vw, 26px); line-height: 1.4; color: var(--paper); max-width: 560px; }
+      .hist-intent p b { font-weight: normal; font-style: italic; color: var(--lamp); }
+      .hist-read { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
+      .hist-read li { padding: 12px 0; border-bottom: 1px solid var(--line); color: var(--paper-dim); font-size: 16px; }
+      .hist-read li i { color: var(--paper); }
+      .hist-read a { color: var(--paper); text-decoration: underline; text-underline-offset: 3px; }
+      @media (max-width: 860px) { .hist-more { grid-template-columns: 1fr; } }
+      @media (max-width: 860px) {
+        .ai-head { grid-template-columns: 1fr; }
+        .ai-th { display: none; }
+        .ai-row { grid-template-columns: 1fr; gap: 4px; }
+        .ai-row span:nth-child(2)::before { content: "Kasangkapan: "; color: var(--crimson-hi); }
+        .ai-row span:nth-child(3)::before { content: "AI: "; color: var(--crimson-hi); }
+        .ai-row span:nth-child(4)::before { content: "Tao: "; color: var(--crimson-hi); }
+        html[lang="en"] .ai-row span:nth-child(2)::before { content: "Tool: "; }
+        html[lang="en"] .ai-row span:nth-child(4)::before { content: "Human: "; }
+      }
+
+    </style>
+  </head>
+  <body>
+    <header class="sub-top">
+      <a class="brand" href="../"><img src="../assets/img/logo-mono-white.svg" alt="Katipunero" /></a>
+      <nav aria-label="Main">
+        <a href="../" data-i18n="sub.back">← Bumalik</a>
+        <div class="lang" role="group" aria-label="Wika / Language">
+          <button type="button" data-lang="fil" aria-pressed="true" lang="fil" title="Tagalog">TL</button>
+          <button type="button" data-lang="en" aria-pressed="false" lang="en" title="English">EN</button>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <!-- ============ HISTORICAL NOTE ============ -->
+      <section class="hist pad" id="kasaysayan" style="padding-top: clamp(50px, 7vw, 90px)" aria-labelledby="hist-title">
+        <div class="ai-head">
+          <div>
+            <div class="kicker rv" data-i18n="hist.kicker">Paalala sa kasaysayan</div>
+            <h2 class="h-lg rv ink" id="hist-title" style="margin-top: 18px" data-i18n="hist.title">Kathang-isip,<br />sa totoong panahon.</h2>
+          </div>
+          <div class="rv">
+            <p data-i18n="hist.p">Kathang-isip ang <b>Katipunero</b>. Gawa-gawa lang si Enteng, ang pamilya niya at ang kuwento niya, pero nakalagay sila sa totoong panahon: ang Tondo noong sumiklab ang Rebolusyong Pilipino ng 1896. Laro ito, hindi aralin sa kasaysayan.</p>
+          </div>
+        </div>
+        <ul class="hist-list rv">
+          <li data-i18n="hist.l1"><b>Mga totoong tao</b>Totoo ang Katipunan, si Andres Bonifacio at ang sagisag niyang <i>Maypagasa</i>. Pero hindi nangyari ang mga eksena sa laro, at hindi nito sinasabi kung ano ang ginawa o inisip ng mga totoong tao.</li>
+          <li data-i18n="hist.l2"><b>Ang bawal na patalim</b>Kilalang kuwento sa arnis na ipinagbawal ng mga Espanyol ang patalim, kaya itinago ang teknik sa baston at sa sayaw. Pinagtatalunan pa ito ng mga historyador. Ginamit namin ito bilang alamat ng mundo ng laro, hindi bilang tiyak na kasaysayan.</li>
+          <li data-i18n="hist.l3"><b>Ang mga kaaway</b>Batay sa totoong pwersang kolonyal ang Guardia Civil at ang mga Cazador, pero pinasimple sila para sa laro. Kinakatawan nila ang isang sistema ng pananakop, hindi ang isang bayan o lahi.</li>
+          <li data-i18n="hist.l4"><b>Pinasimpleng detalye</b>Pinasimple ang teknik ng arnis, mga uniporme, armas at ang kalye para sa prototype na ito, at may mga paunang detalye na galing sa AI. Kung may mali, sabihin mo sa feedback form. Iyan ang silbi ng playtest.</li>
+        </ul>
+        <div class="hist-more rv">
+          <div class="hist-intent">
+            <h3 data-i18n="hist.why">Bakit namin ginawa ito</h3>
+            <p data-i18n="hist.intent">Gusto naming lumabas ka sa laro na may tanong. Sino talaga ang mga Katipunero? Ano ang buhay sa Tondo noong 1896? Saan nanggaling ang arnis? Kung ang isang laban sa kalye ay mag-udyok sa iyo na magbasa, magtanong sa lolo't lola, o bumisita sa museo, nagawa na ng laro ang trabaho niya. <b>Kilalanin ang kasaysayan natin, at mahalin ito.</b></p>
+          </div>
+          <div>
+            <h3 id="alamin" data-i18n="hist.readh">Alamin pa</h3>
+            <ul class="hist-read">
+              <li data-i18n="hist.r1"><i>The Revolt of the Masses</i>, Teodoro Agoncillo (1956). Ang klasikong salaysay ng Katipunan at ni Bonifacio.</li>
+              <li data-i18n="hist.r2"><i>Pasyon and Revolution</i>, Reynaldo Ileto (1979). Paano inunawa ng karaniwang Pilipino ang rebolusyon.</li>
+              <li data-i18n="hist.r3"><i>Kartilya ng Katipunan</i>, Emilio Jacinto. Ang mga aral na sinumpaan ng bawat kasapi. Maikli, at puwedeng basahin ngayon din.</li>
+              <li data-i18n="hist.r4"><i>Filipino Martial Culture</i>, Mark V. Wiley (1997). Kasaysayan at mga maestro ng arnis, eskrima at kali.</li>
+              <li data-i18n="hist.r5">Bisitahin ang Museo ng Katipunan sa Pinaglabanan Shrine, San Juan, at ang <a href="https://nhcp.gov.ph/" target="_blank" rel="noopener">National Historical Commission of the Philippines</a>.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="sub-foot">
+      <span data-i18n="foot.made">Katipunero · combat prototype, playtest build · gawa sa Unity 6</span>
+      <span><a href="../play/" data-i18n="foot.play">Laruin</a> · <a href="../ai/" data-i18n="foot.ai">AI disclosure</a> · <a href="../kasaysayan/" data-i18n="foot.hist">Kasaysayan</a></span>
+    </footer>
+    <script src="../assets/js/i18n.js"></script>
+  </body>
+</html>

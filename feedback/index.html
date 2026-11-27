@@ -42,6 +42,11 @@
       .thanks { display: none; margin-top: 36px; }
       .thanks h2 { font-family: var(--display); font-weight: 900; font-size: 56px; text-transform: uppercase; line-height: 0.9; }
       .thanks p { margin-top: 12px; color: #4a4033; }
+      .know { margin-top: 40px; padding-top: 28px; border-top: 1px solid rgba(12,10,8,0.25); }
+      .know ul { list-style: none; margin-top: 14px; border-top: 1px solid rgba(12,10,8,0.18); }
+      .know li { padding: 10px 0; border-bottom: 1px solid rgba(12,10,8,0.18); font-size: 17px; color: #4a4033; }
+      .know li i { color: var(--ink); }
+      .know a { color: var(--crimson); }
       .sent form { display: none; } .sent .thanks { display: block; }
       .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
       @media (max-width: 640px) { .two { grid-template-columns: 1fr; } }
@@ -115,6 +120,18 @@
       <div class="thanks" aria-live="polite">
         <h2>Salamat,<br /><span id="thx-name">kasama</span>.</h2>
         <p>Your report is in. You can <a href="../play/">fight again</a>. Every playthrough helps.</p>
+        <div class="know">
+          <div class="kicker">Alamin pa · Know more</div>
+          <p>The fight was fiction. The revolution was not. If the game left you curious, start here:</p>
+          <ul>
+            <li><i>The Revolt of the Masses</i>, Teodoro Agoncillo (1956). The classic account of the Katipunan and Bonifacio.</li>
+            <li><i>Pasyon and Revolution</i>, Reynaldo Ileto (1979). How ordinary Filipinos understood the revolution.</li>
+            <li><i>Kartilya ng Katipunan</i>, Emilio Jacinto. The teachings every member swore to. Short enough to read today.</li>
+            <li><i>Filipino Martial Culture</i>, Mark V. Wiley (1997). The history and masters of arnis, eskrima and kali.</li>
+            <li>Visit the Museo ng Katipunan at the Pinaglabanan Shrine in San Juan, and the <a href="https://nhcp.gov.ph/" target="_blank" rel="noopener">National Historical Commission of the Philippines</a>.</li>
+          </ul>
+          <p><a href="../kasaysayan/">What's real and what's fiction in the game →</a></p>
+        </div>
       </div>
     </main>
     <script src="../assets/js/config.js"></script>

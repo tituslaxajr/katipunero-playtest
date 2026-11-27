@@ -147,7 +147,7 @@
 
     "ai.kicker": "AI declaration · Proof of concept",
     "ai.title": "How this<br />was made.",
-    "ai.p1": "This build is a <b>proof of concept</b>. We used generative AI to make it quickly enough to put in your hands and find out whether the combat is fun. The AI-made pieces below are placeholders and starting points, not the finished game.",
+    "ai.p1": "This build is a <b>proof of concept</b>. We used generative AI to make it quickly enough to put in your hands and find out whether the combat is fun. The AI-made pieces are placeholders and starting points, not the finished game.",
     "ai.p2": "The game's UX is <b>human-centred</b>. Playtesting, fine-tuning and finalising the narrative, gameplay and illustration will be done by people, starting with your feedback.",
     "ai.table": "Where AI was used, and the human role",
     "ai.th1": "Part of the game",
@@ -185,7 +185,28 @@
     "foot.arnis": "Arnis has been the national martial art and sport of the Philippines since 2009 (RA 9850).",
     "foot.play": "Play",
     "foot.feedback": "Feedback",
-    "foot.ai": "AI declaration"
+    "foot.ai": "AI declaration",
+    "foot.hist": "History",
+    "hist.kicker": "Historical note",
+    "hist.title": "Fiction,<br />in a real moment.",
+    "hist.p": "<b>Katipunero</b> is fiction. Enteng, his family and his story are invented, but they are set in a real time and place: Tondo at the outbreak of the Philippine Revolution of 1896. It is a game, not a history lesson.",
+    "hist.l1": "<b>Real people</b>The Katipunan, Andres Bonifacio and his nom de guerre <i>Maypagasa</i> are real. The scenes in the game did not happen, and it makes no claim about what real people did or thought.",
+    "hist.l2": "<b>The blade ban</b>A well-known story in arnis says the Spanish banned blades, so the techniques were hidden in the stick and in dance. Historians still debate it. We use it as the legend of the game's world, not as settled history.",
+    "hist.l3": "<b>The enemies</b>The Guardia Civil and the Cazadores are based on real colonial forces, simplified for play. They stand for a system of colonial rule, not for a people or a nation.",
+    "hist.l4": "<b>Simplified details</b>Arnis technique, uniforms, weapons and the street are simplified for this prototype, and some early details came from AI. If something is wrong, tell us in the feedback form. That is what the playtest is for.",
+    "hist.why": "Why we made this",
+    "hist.teaser": "What is real and what is fiction, plus books to read after you play.",
+    "hist.more": "Read the full note",
+    "ai.more": "See the full breakdown",
+    "after.read": "After you play: <a href=\"kasaysayan/#alamin\">learn the real history →</a>",
+    "sub.back": "← Back",
+    "hist.intent": "We want you to leave the game with questions. Who were the Katipuneros, really? What was life in Tondo like in 1896? Where does arnis come from? If one street fight makes you open a book, ask your lolo and lola, or visit a museum, the game has done its job. <b>Know our history, and learn to love it.</b>",
+    "hist.readh": "Know more",
+    "hist.r1": "<i>The Revolt of the Masses</i>, Teodoro Agoncillo (1956). The classic account of the Katipunan and Bonifacio.",
+    "hist.r2": "<i>Pasyon and Revolution</i>, Reynaldo Ileto (1979). How ordinary Filipinos understood the revolution.",
+    "hist.r3": "<i>Kartilya ng Katipunan</i>, Emilio Jacinto. The teachings every member swore to. Short enough to read today.",
+    "hist.r4": "<i>Filipino Martial Culture</i>, Mark V. Wiley (1997). The history and masters of arnis, eskrima and kali.",
+    "hist.r5": "Visit the Museo ng Katipunan at the Pinaglabanan Shrine in San Juan, and the <a href=\"https://nhcp.gov.ph/\" target=\"_blank\" rel=\"noopener\">National Historical Commission of the Philippines</a>."
   };
 
   /* Strings the page script builds at runtime. {n}, {ms} etc. are filled in. */

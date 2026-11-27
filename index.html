@@ -335,6 +335,23 @@
       .ai-row b { font-family: var(--display); font-weight: 800; font-size: 20px; letter-spacing: 0.03em; text-transform: uppercase; }
       .ai-th span { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--crimson-hi) !important; }
       .ai-note { margin-top: 22px; color: var(--paper-dim); text-transform: none; letter-spacing: 0.04em; }
+      .hist { padding-top: clamp(100px, 12vw, 160px); }
+      .hist-list { margin-top: 44px; display: grid; grid-template-columns: 1fr 1fr; gap: 0 48px; border-top: 1px solid var(--line); list-style: none; padding: 0; }
+      .hist-list li { padding: 20px 0; border-bottom: 1px solid var(--line); color: var(--paper-dim); font-size: 16px; }
+      .hist-list b { display: block; margin-bottom: 6px; font-family: var(--display); font-weight: 800; font-size: 20px; letter-spacing: 0.03em; text-transform: uppercase; color: var(--paper); }
+      @media (max-width: 860px) { .hist-list { grid-template-columns: 1fr; } }
+      .hist-more { margin-top: 56px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px 48px; }
+      .hist-more h3 { font-family: var(--mono); font-size: 11px; font-weight: normal; letter-spacing: 0.14em; text-transform: uppercase; color: var(--crimson-hi); margin: 0 0 14px; }
+      .hist-intent p { font-size: clamp(20px, 2vw, 26px); line-height: 1.4; color: var(--paper); max-width: 560px; }
+      .hist-intent p b { font-weight: normal; font-style: italic; color: var(--lamp); }
+      .hist-read { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
+      .hist-read li { padding: 12px 0; border-bottom: 1px solid var(--line); color: var(--paper-dim); font-size: 16px; }
+      .hist-read li i { color: var(--paper); }
+      .hist-read a { color: var(--paper); text-decoration: underline; text-underline-offset: 3px; }
+      @media (max-width: 860px) { .hist-more { grid-template-columns: 1fr; } }
+      .hist-teaser { color: var(--paper-dim); margin-bottom: 22px; max-width: 460px; }
+      .form-note { margin-top: -6px; font-size: 14px; color: #6b5f4d; font-style: italic; }
+      .after .read a { color: var(--crimson); }
       @media (max-width: 860px) {
         .ai-head { grid-template-columns: 1fr; }
         .ai-th { display: none; }
@@ -676,6 +693,7 @@
               </div>
 
               <label class="consent"><input type="checkbox" name="consent" id="f-consent" value="yes" required /><span data-i18n="consent">Pumapayag ako na gamitin ng guro ko ang mga sagot at feedback ko sa playtest para sa class project na ito. Puwede kong ipabura ang mga ito kahit kailan.</span></label>
+              <p class="form-note" data-i18n="ai.note">Ang sign-up at feedback mo ay napupunta lang sa Google Sheet ng guro. Hindi ito ipinapadala sa kahit anong AI tool.</p>
 
               <div class="sig">
                 <div>
@@ -694,6 +712,7 @@
                 <a class="btn" href="play/" data-hot data-flood><span data-i18n="after.cta">Pumasok sa Tondo</span><span class="arr">→</span></a>
                 <span class="small">Q = sangga · Space = ilag · R = agaw</span>
               </div>
+              <p class="read small" data-i18n="after.read">Pagkatapos maglaro: <a href="kasaysayan/#alamin">alamin pa ang totoong kasaysayan →</a></p>
             </div>
           </div>
         </div>
@@ -708,22 +727,35 @@
             <h2 class="h-lg rv ink" id="ai-title" style="margin-top: 18px" data-i18n="ai.title">Paano ito<br />ginawa.</h2>
           </div>
           <div class="rv">
-            <p data-i18n="ai.p1">Ang build na ito ay <b>proof of concept</b>. Gumamit kami ng generative AI para mabuo ito nang mabilis, maibigay agad sa inyo, at malaman kung masaya ba ang combat. Pansamantala lang ang mga bahaging gawa ng AI sa ibaba. Panimula lang ito, hindi pa ang tapos na laro.</p>
+            <p data-i18n="ai.p1">Ang build na ito ay <b>proof of concept</b>. Gumamit kami ng generative AI para mabuo ito nang mabilis, maibigay agad sa inyo, at malaman kung masaya ba ang combat. Pansamantala lang ang mga bahaging gawa ng AI. Panimula lang ito, hindi pa ang tapos na laro.</p>
             <p style="margin-top: 14px" data-i18n="ai.p2">Ang UX ng laro ay <b>human-centered</b>. Mga tao ang gagawa ng playtesting at ng pag-refine ng kuwento, gameplay at art, simula sa feedback ninyo.</p>
           </div>
         </div>
-        <div class="ai-table rv" role="table" aria-label="Kung saan ginamit ang AI, at ang papel ng tao" data-i18n-attr="aria-label:ai.table">
-          <div class="ai-row ai-th" role="row"><span role="columnheader" data-i18n="ai.th1">Bahagi ng laro</span><span role="columnheader" data-i18n="ai.th2">AI tool (proof of concept)</span><span role="columnheader" data-i18n="ai.th3">Ginawa ng AI</span><span role="columnheader" data-i18n="ai.th4">Papel ng tao: ngayon → sa huli</span></div>
-          <div class="ai-row" role="row"><span role="cell" data-i18n="ai.r1a"><b>Mga ilustrasyon</b> (sining ng kuwento, poster)</span><span role="cell">Gemini (Google)</span><span role="cell" data-i18n="ai.r1c">Gumawa ng mga konseptong larawan na ink-wash, noir at woodcut</span><span role="cell" data-i18n="ai.r1d">Direksiyon sa sining at pagpili ngayon; ang huling ilustrasyon ay gagawin ng mga artistang tao</span></div>
-          <div class="ai-row" role="row"><span role="cell" data-i18n="ai.r2a"><b>Mga 3D na tauhan</b></span><span role="cell">Tripo3D; Mixamo</span><span role="cell" data-i18n="ai.r2c">Ginawang 3D model ang konseptong sining; awtomatikong ni-rig at in-animate ang mga ito</span><span role="cell" data-i18n="ai.r2d">Pagpili at pag-import ng mga model ngayon; pipinuhin ng mga tao ang huling mga tauhan</span></div>
-          <div class="ai-row" role="row"><span role="cell" data-i18n="ai.r3a"><b>Boses, musika at tunog</b></span><span role="cell">ElevenLabs</span><span role="cell" data-i18n="ai.r3c">Gumawa ng narasyon at musika ng trailer, at ng mga tunog ng palo, sangga at paligid</span><span role="cell" data-i18n="ai.r3d">Pagpili at paglalagay ng mga tunog ngayon; iaangkop batay sa puna sa playtest</span></div>
-          <div class="ai-row" role="row"><span role="cell" data-i18n="ai.r4a"><b>Salaysay</b> (kuwento at mga tauhan)</span><span role="cell">Gemini (Google)</span><span role="cell" data-i18n="ai.r4c">Nag-draft ng pinagmulan ng kuwento at ng gabay sa mga tauhan mula sa ideya ng lumikha</span><span role="cell" data-i18n="ai.r4d">Ideya at kasaysayan ngayon; isusulat at aaprubahan ng mga tao ang huling salaysay</span></div>
-          <div class="ai-row" role="row"><span role="cell" data-i18n="ai.r5a"><b>Teknik at mga termino ng arnis</b></span><span role="cell" data-i18n="ai.r5b">AI (panimula)</span><span role="cell" data-i18n="ai.r5c">Nagmungkahi ng unang hanay ng galaw, mga anggulo ng palo at mga terminong Tagalog</span><span role="cell" data-i18n="ai.r5d">Pipinuhin at bubuuin ng mga tao: mga dalubhasa at nagsasanay ng arnis, at ang mga sanggunian</span></div>
-          <div class="ai-row" role="row"><span role="cell" data-i18n="ai.r6a"><b>Gameplay at UX</b></span><span role="cell">—</span><span role="cell">—</span><span role="cell" data-i18n="ai.r6d">Dinisenyo, sinubok at pinino ng mga tao. Ang playtest na ito ang hakbang na iyon.</span></div>
-          <div class="ai-row" role="row"><span role="cell" data-i18n="ai.r7a"><b>Code</b> (ang laro at ang website na ito)</span><span role="cell">Claude (Anthropic), Claude Code</span><span role="cell" data-i18n="ai.r7c">Isinulat ang mga Unity C# script, ang web build at ang site na ito</span><span role="cell" data-i18n="ai.r7d">Mga tuntunin sa disenyo, pagsubok sa pakiramdam ng laro, at pag-apruba sa bawat hakbang</span></div>
-          <div class="ai-row" role="row"><span role="cell" data-i18n="ai.r8a"><b>Logo at teksto ng pahina</b></span><span role="cell">Claude (Anthropic)</span><span role="cell" data-i18n="ai.r8c">Binuo ang logo mula sa open-licence na font na Big Shoulders, nag-draft ng teksto at ng salin nito sa Tagalog</span><span role="cell" data-i18n="ai.r8d">Ang ideya ng logong may guhit, at ang huling pananalita</span></div>
+        <p class="rv" style="margin-top: 36px"><a class="btn ghost" href="ai/" data-hot><span data-i18n="ai.more">Tingnan ang buong detalye</span><span class="arr">→</span></a></p>
+      </section>
+
+      <!-- ============ HISTORICAL NOTE ============ -->
+      <section class="hist pad" id="kasaysayan" aria-labelledby="hist-title">
+        <div class="ai-head">
+          <div>
+            <div class="kicker rv" data-i18n="hist.kicker">Paalala sa kasaysayan</div>
+            <h2 class="h-lg rv ink" id="hist-title" style="margin-top: 18px" data-i18n="hist.title">Kathang-isip,<br />sa totoong panahon.</h2>
+          </div>
+          <div class="rv">
+            <p data-i18n="hist.p">Kathang-isip ang <b>Katipunero</b>. Gawa-gawa lang si Enteng, ang pamilya niya at ang kuwento niya, pero nakalagay sila sa totoong panahon: ang Tondo noong sumiklab ang Rebolusyong Pilipino ng 1896. Laro ito, hindi aralin sa kasaysayan.</p>
+          </div>
         </div>
-        <p class="ai-note mono rv" data-i18n="ai.note">Ang sign-up at feedback mo ay napupunta lang sa Google Sheet ng guro. Hindi ito ipinapadala sa kahit anong AI tool.</p>
+        <div class="hist-more rv">
+          <div class="hist-intent">
+            <h3 data-i18n="hist.why">Bakit namin ginawa ito</h3>
+            <p data-i18n="hist.intent">Gusto naming lumabas ka sa laro na may tanong. Sino talaga ang mga Katipunero? Ano ang buhay sa Tondo noong 1896? Saan nanggaling ang arnis? Kung ang isang laban sa kalye ay mag-udyok sa iyo na magbasa, magtanong sa lolo't lola, o bumisita sa museo, nagawa na ng laro ang trabaho niya. <b>Kilalanin ang kasaysayan natin, at mahalin ito.</b></p>
+          </div>
+          <div>
+            <h3 data-i18n="hist.readh">Alamin pa</h3>
+            <p class="hist-teaser" data-i18n="hist.teaser">Ano ang totoo at ano ang kathang-isip, at mga librong babasahin pagkatapos maglaro.</p>
+            <a class="btn ghost" href="kasaysayan/" data-hot><span data-i18n="hist.more">Basahin ang buong paalala</span><span class="arr">→</span></a>
+          </div>
+        </div>
       </section>
     </main>
 
@@ -732,7 +764,7 @@
       <div class="foot-row">
         <span data-i18n="foot.made">Katipunero · combat prototype, playtest build · gawa sa Unity 6</span>
         <span data-i18n="foot.arnis">Ang arnis ang pambansang sining ng pakikipaglaban at isport ng Pilipinas mula pa noong 2009 (RA 9850).</span>
-        <span><a href="play/" data-flood data-i18n="foot.play">Laruin</a> · <a href="feedback/" data-i18n="foot.feedback">Feedback</a> · <a href="#ai" data-i18n="foot.ai">AI disclosure</a></span>
+        <span><a href="play/" data-flood data-i18n="foot.play">Laruin</a> · <a href="feedback/" data-i18n="foot.feedback">Feedback</a> · <a href="ai/" data-i18n="foot.ai">AI disclosure</a> · <a href="kasaysayan/" data-i18n="foot.hist">Kasaysayan</a></span>
       </div>
     </footer>
 
