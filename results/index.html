@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Playtest Results — Katipunero</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=IM+Fell+English:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <!--
+      Playtest results. Reads TOTALS ONLY from the Sheet's Apps Script (?view=summary):
+      no rows, names, aliases, emails or written answers ever reach this page, and any group
+      with fewer than 5 runs is hidden. Add ?demo=1 to the URL to preview with made-up numbers.
+    -->
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #0c0a08; --paper: #efe4cf; --sheet: #f6eedd; --crimson: #c8202a; --muted: #6b5f4d; --line: rgba(12,10,8,0.18);
+        --text-primary: #0c0a08; --text-secondary: #4a4033; --text-muted: #6b5f4d;
+        /* One hue for single-series bars; an ordinal crimson ramp (validated) for grades C → S. */
+        --series-1: #b81d27;
+        --grade-c: #df8a7e; --grade-b: #d2564e; --grade-a: #b81d27; --grade-s: #701016;
+        --display: "Big Shoulders Display", Impact, sans-serif; --serif: "IM Fell English", Georgia, serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { background: var(--paper); color: var(--text-primary); font-family: var(--serif); font-size: 18px; line-height: 1.5; }
+      header { display: flex; justify-content: space-between; align-items: center; padding: 18px clamp(16px, 4vw, 56px); background: var(--ink); color: var(--paper); }
+      header a { color: var(--paper); text-decoration: none; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
+      main { max-width: 1080px; margin: 0 auto; padding: clamp(32px, 6vw, 72px) 16px 80px; }
+      .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--crimson); }
+      h1 { font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: clamp(48px, 8vw, 96px); line-height: 0.9; margin: 12px 0 14px; }
+      .lede { color: var(--text-secondary); max-width: 640px; }
+      .status { margin-top: 18px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; color: var(--text-muted); }
+      .demo { display: none; margin-top: 18px; padding: 10px 14px; background: #ffe08a; font-family: var(--mono); font-size: 13px; }
+      .is-demo .demo { display: block; }
+
+      .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-top: 32px; }
+      .tile { background: var(--sheet); border: 1px solid var(--line); padding: 16px 18px; }
+      .tile .label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+      .tile .value { font-family: var(--display); font-weight: 900; font-size: 46px; line-height: 1; margin-top: 8px; }
+      .tile .note { font-size: 14px; color: var(--text-secondary); margin-top: 6px; }
+
+      section.card { margin-top: 28px; background: var(--sheet); border: 1px solid var(--line); box-shadow: 8px 8px 0 var(--ink); padding: clamp(18px, 3vw, 30px); }
+      .card h2 { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: 28px; letter-spacing: 0.02em; line-height: 1.05; }
+      .card .q { color: var(--text-secondary); font-style: italic; margin-top: 4px; font-size: 16px; }
+      .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; }
+      .grid2 > section.card { margin-top: 28px; }
+      .chart { margin-top: 18px; position: relative; }
+      .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+      .axis text, .chart text { font-family: var(--mono); font-size: 12px; fill: var(--text-secondary); }
+      .chart .val { fill: var(--text-primary); font-weight: 500; }
+      .grid line { stroke: var(--line); stroke-width: 1; }
+      .bar { fill: var(--series-1); }
+      .hit { fill: transparent; cursor: default; }
+      .hit:hover + .bar, .bar.hover { opacity: 0.8; }
+      .empty { font-family: var(--mono); font-size: 13px; color: var(--text-muted); padding: 18px 0; }
+      .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 12px; font-family: var(--mono); font-size: 12px; color: var(--text-secondary); }
+      .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+      details { margin-top: 14px; font-family: var(--mono); font-size: 12px; color: var(--text-muted); }
+      details summary { cursor: pointer; }
+      table { border-collapse: collapse; margin-top: 8px; width: 100%; }
+      th, td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--line); color: var(--text-secondary); font-weight: 400; }
+      th { color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; }
+      .tip { position: absolute; pointer-events: none; background: var(--ink); color: var(--paper); font-family: var(--mono); font-size: 12px; padding: 6px 9px; white-space: nowrap; transform: translate(-50%, calc(-100% - 8px)); opacity: 0; transition: opacity 0.1s; z-index: 2; }
+      .small { font-family: var(--mono); font-size: 12px; color: var(--text-muted); margin-top: 40px; line-height: 1.6; }
+      @media (max-width: 760px) { .grid2 { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <header><a href="../"><img src="../assets/img/logo-on-dark.svg" alt="Katipunero" style="height: 28px; display: block" /></a><a href="../play/">Play →</a></header>
+    <main id="main">
+      <div class="kicker">Ulat ng playtest · Playtest results</div>
+      <h1>How they<br />fought</h1>
+      <p class="lede">Totals from every playthrough of the browser playtest. Anonymous by design: no names, no written answers, and any group smaller than five runs stays hidden.</p>
+      <p class="demo">DEMO DATA — these numbers are made up to preview the page. Remove <code>?demo=1</code> from the address to see the real totals.</p>
+      <p class="status" id="status">Loading…</p>
+
+      <div class="tiles" id="tiles"></div>
+
+      <section class="card">
+        <h2>Where players fall</h2>
+        <p class="q">Lost runs, by the wave they fell on. A spike shows where difficulty jumps.</p>
+        <div class="chart" id="c-fall"></div>
+      </section>
+
+      <div class="grid2">
+        <section class="card">
+          <h2>Does Sanayan help?</h2>
+          <p class="q">Perfect parries per Sangga press, by whether the player trained.</p>
+          <div class="chart" id="c-training"></div>
+        </section>
+        <section class="card">
+          <h2>Strike mix</h2>
+          <p class="q">Share of strikes thrown. All lights = mashing; a spread = arnis.</p>
+          <div class="chart" id="c-strikes"></div>
+        </section>
+      </div>
+
+      <section class="card">
+        <h2>Grades by wave</h2>
+        <p class="q">Share of each grade when a wave is cleared (S is best).</p>
+        <div class="chart" id="c-grades"></div>
+      </section>
+
+      <section class="card">
+        <h2>Big moments</h2>
+        <p class="q">The techniques the game is built to reward, added up across all runs.</p>
+        <div class="tiles" id="moments" style="margin-top: 18px"></div>
+      </section>
+
+      <section class="card">
+        <h2>What they said</h2>
+        <p class="q">Average of the 1–5 scales on the feedback form. Written answers stay in the Sheet.</p>
+        <div class="tiles" id="feedback" style="margin-top: 18px"></div>
+      </section>
+
+      <p class="small">Source: the playtest Google Sheet (Runs and Feedback tabs), totals refreshed every 5 minutes. Run stats are anonymous gameplay numbers; players can switch them off on the play page. <a href="../privacy/" style="color: var(--crimson)">Privacy</a></p>
+    </main>
+
+    <script src="../assets/js/config.js"></script>
+    <script>
+      (function () {
+        var NS = "http://www.w3.org/2000/svg";
+        var demo = /[?&]demo=1/.test(location.search);
+        if (demo) document.body.classList.add("is-demo");
+
+        // ───────── data ─────────
+        var DEMO = {
+          updated_at: new Date().toISOString(), min_group: 5, runs: 148, players: 41,
+          outcomes: { won: 22, lost: 109, quit: 11, left: 6 },
+          fell_on_wave: { 1: 18, 2: 34, 3: 41, 4: 16 }, reached_wave: { 1: 25, 2: 41, 3: 50, 4: 32 },
+          parry: { presses: 2130, perfect: 612, late: 488 },
+          parry_by_training: { completed: { runs: 61, presses: 980, perfect: 372 }, partial: { runs: 9, presses: 120, perfect: 31 }, skipped: { runs: 40, presses: 610, perfect: 118 }, "not offered": { runs: null, hidden: true } },
+          grades: { 1: { S: 8, A: 31, B: 52, C: 32 }, 2: { S: 5, A: 22, B: 30, C: 32 }, 3: { S: 2, A: 9, B: 17, C: 20 }, 4: { S: 1, A: 6, B: 8, C: 7 } },
+          strikes: { light: 6120, heavy: 1380, redonda: 410, punyo: 520 },
+          moments: { redonda_multi: 166, agaw_disarms: 203, slams: 141, cart_hits: 37, kills: 690, kills_taken_saber: 58 },
+          win_seconds_median: 412,
+          feedback: { reports: 33, fun: { mean: 4.1, n: 33 }, parry_readable: { mean: 3.4, n: 32 }, difficulty: { mean: 3.6, n: 33 } }
+        };
+
+        var url = (window.KATIPUNERO && window.KATIPUNERO.SHEET_URL) || "";
+        var status = document.getElementById("status");
+        if (demo) render(DEMO);
+        else if (!url) status.textContent = "No Sheet connected (SHEET_URL is empty in assets/js/config.js). Add ?demo=1 to preview.";
+        else fetch(url + "?view=summary").then(function (r) { return r.json(); }).then(render).catch(function () {
+          status.textContent = "Couldn't load the totals. If you just updated the Apps Script, deploy a New version (Deploy → Manage deployments). Add ?demo=1 to preview.";
+        });
+
+        // ───────── helpers ─────────
+        function el(tag, attrs, parent) {
+          var e = document.createElementNS(NS, tag);
+          for (var k in attrs) e.setAttribute(k, attrs[k]);
+          if (parent) parent.appendChild(e);
+          return e;
+        }
+        function pct(a, b) { return b > 0 ? Math.round((a / b) * 100) + "%" : "—"; }
+        function fmt(n) { return n == null ? "—" : Number(n).toLocaleString("en"); }
+        function clock(s) { if (s == null) return "—"; s = Math.round(s); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+        function empty(id, text) { var d = document.getElementById(id); d.innerHTML = '<p class="empty">' + text + "</p>"; }
+
+        function tile(parent, label, value, note) {
+          var t = document.createElement("div");
+          t.className = "tile";
+          t.innerHTML = '<div class="label"></div><div class="value"></div>' + (note ? '<div class="note"></div>' : "");
+          t.querySelector(".label").textContent = label;
+          t.querySelector(".value").textContent = value;
+          if (note) t.querySelector(".note").textContent = note;
+          parent.appendChild(t);
+        }
+
+        function table(container, head, rows) {
+          var d = document.createElement("details");
+          var html = "<summary>Show as table</summary><table><tr>" + head.map(function (h) { return "<th>" + h + "</th>"; }).join("") + "</tr>";
+          rows.forEach(function (r) { html += "<tr>" + r.map(function (c) { return "<td>" + c + "</td>"; }).join("") + "</tr>"; });
+          d.innerHTML = html + "</table>";
+          container.appendChild(d);
+        }
+
+        function tooltip(container) {
+          var tip = document.createElement("div");
+          tip.className = "tip";
+          container.appendChild(tip);
+          return {
+            show: function (text, x, y) { tip.textContent = text; tip.style.left = x + "px"; tip.style.top = y + "px"; tip.style.opacity = 1; },
+            hide: function () { tip.style.opacity = 0; }
+          };
+        }
+
+        // Rounded data-end, square at the baseline (vertical bar).
+        function vbarPath(x, y, w, h, r) {
+          r = Math.min(r, w / 2, h);
+          return "M" + x + "," + (y + h) + "V" + (y + r) + "Q" + x + "," + y + " " + (x + r) + "," + y + "H" + (x + w - r) + "Q" + (x + w) + "," + y + " " + (x + w) + "," + (y + r) + "V" + (y + h) + "Z";
+        }
+        // Rounded data-end, square at the baseline (horizontal bar).
+        function hbarPath(x, y, w, h, r) {
+          r = Math.min(r, h / 2, w);
+          return "M" + x + "," + y + "H" + (x + w - r) + "Q" + (x + w) + "," + y + " " + (x + w) + "," + (y + r) + "V" + (y + h - r) + "Q" + (x + w) + "," + (y + h) + " " + (x + w - r) + "," + (y + h) + "H" + x + "Z";
+        }
+
+        // Vertical bars: one series, categories along x.
+        function vbars(id, items, unit) {
+          var box = document.getElementById(id);
+          var W = Math.max(300, Math.round(box.clientWidth) || 760), H = 260, L = 44, B = 28, T = 22;
+          var max = Math.max.apply(null, items.map(function (i) { return i.v; }).concat([1]));
+          // Round tick step (1, 2 or 5 × 10ⁿ) giving about four gridlines.
+          var raw = max / 4, mag = Math.pow(10, Math.floor(Math.log10(raw)));
+          var step = [1, 2, 5, 10].map(function (m) { return m * mag; }).find(function (s) { return s >= raw; });
+          step = Math.max(1, step);
+          var ticks = Math.ceil(max / step), top = ticks * step;
+          var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": box.previousElementSibling.textContent }, box);
+          var g = el("g", { class: "grid" }, svg);
+          for (var k = 0; k <= ticks; k++) {
+            var gy = T + (H - B - T) * (1 - k / ticks);
+            el("line", { x1: L, x2: W, y1: gy, y2: gy }, g);
+            el("text", { x: L - 8, y: gy + 4, "text-anchor": "end" }, svg).textContent = fmt(k * step);
+          }
+          var tip = tooltip(box);
+          var slot = (W - L) / items.length, bw = Math.min(90, slot * 0.5);
+          items.forEach(function (it, i) {
+            var h = (H - B - T) * (it.v / top), x = L + slot * i + (slot - bw) / 2, y = H - B - h;
+            el("path", { d: vbarPath(x, y, bw, Math.max(h, 0.01), 4), class: "bar" }, svg);
+            el("text", { x: x + bw / 2, y: y - 6, "text-anchor": "middle", class: "val" }, svg).textContent = fmt(it.v);
+            el("text", { x: x + bw / 2, y: H - 8, "text-anchor": "middle" }, svg).textContent = it.label;
+            var hit = el("rect", { x: L + slot * i, y: T, width: slot, height: H - B - T, class: "hit" }, svg);
+            hit.addEventListener("mousemove", function () {
+              var r = box.getBoundingClientRect(), s = r.width / W;
+              tip.show(it.label + ": " + fmt(it.v) + " " + unit, (x + bw / 2) * s, y * s);
+            });
+            hit.addEventListener("mouseleave", tip.hide);
+          });
+        }
+
+        // Horizontal bars: label column, bar, value. items: {label, v (0..1 or number), text, muted}
+        function hbars(id, items, max) {
+          var box = document.getElementById(id);
+          var W = Math.max(280, Math.round(box.clientWidth) || 520), rowH = 40, L = 120, R = 64, H = items.length * rowH;
+          var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": box.previousElementSibling.textContent }, box);
+          var tip = tooltip(box);
+          items.forEach(function (it, i) {
+            var y = i * rowH + 9, bh = 22;
+            el("text", { x: 0, y: y + 15 }, svg).textContent = it.label;
+            if (it.muted) { el("text", { x: L, y: y + 15, "font-style": "italic" }, svg).textContent = it.text; return; }
+            var w = Math.max((W - L - R) * (it.v / max), 0.01);
+            el("path", { d: hbarPath(L, y, w, bh, 4), class: "bar" }, svg);
+            el("text", { x: L + w + 8, y: y + 15, class: "val" }, svg).textContent = it.text;
+            var hit = el("rect", { x: 0, y: i * rowH, width: W, height: rowH, class: "hit" }, svg);
+            hit.addEventListener("mousemove", function () {
+              var r = box.getBoundingClientRect(), s = r.width / W;
+              tip.show(it.label + ": " + it.tip, (L + w / 2) * s, y * s);
+            });
+            hit.addEventListener("mouseleave", tip.hide);
+          });
+        }
+
+        // ───────── render ─────────
+        function render(d) {
+          if (!d || typeof d.runs !== "number") { status.textContent = "The Sheet answered, but not with totals. Deploy the updated Apps Script as a New version."; return; }
+          var when = new Date(d.updated_at);
+          status.textContent = (demo ? "Demo" : "Live") + " · " + fmt(d.runs) + " runs · updated " + when.toLocaleString("en-PH", { dateStyle: "medium", timeStyle: "short" });
+
+          // Headline tiles
+          var tiles = document.getElementById("tiles");
+          tile(tiles, "Runs", fmt(d.runs), fmt(d.players) + " players (browsers)");
+          tile(tiles, "Win rate", pct(d.outcomes.won, d.runs), fmt(d.outcomes.won) + " cleared all four waves");
+          tile(tiles, "Perfect parry", pct(d.parry.perfect, d.parry.presses), "of " + fmt(d.parry.presses) + " Sangga presses");
+          tile(tiles, "Median win", clock(d.win_seconds_median), d.win_seconds_median == null ? "needs 5+ wins" : "minutes : seconds");
+
+          if (d.runs === 0) {
+            ["c-fall", "c-training", "c-strikes", "c-grades"].forEach(function (id) { empty(id, "No runs yet. Totals appear after the first playthrough."); });
+          } else {
+            // Where players fall
+            var fall = [1, 2, 3, 4].map(function (w) { return { label: "Wave " + w, v: d.fell_on_wave[w] || 0 }; });
+            if (fall.every(function (f) { return f.v === 0; })) empty("c-fall", "Nobody has lost a run yet.");
+            else {
+              vbars("c-fall", fall, "lost runs");
+              table(document.getElementById("c-fall"), ["Wave", "Lost runs", "Reached this wave"], fall.map(function (f, i) { return [f.label, fmt(f.v), fmt(d.reached_wave[i + 1] || 0)]; }));
+            }
+
+            // Training vs parry rate
+            var order = ["completed", "partial", "skipped", "not offered"];
+            var names = { completed: "Trained", partial: "Some training", skipped: "Skipped", "not offered": "Before Sanayan" };
+            var tr = order.filter(function (g) { return d.parry_by_training[g]; }).map(function (g) {
+              var x = d.parry_by_training[g];
+              if (x.hidden) return { label: names[g], muted: true, text: "fewer than " + d.min_group + " runs" };
+              var rate = x.presses ? x.perfect / x.presses : 0;
+              return { label: names[g], v: rate, text: pct(x.perfect, x.presses), tip: pct(x.perfect, x.presses) + " perfect · " + fmt(x.runs) + " runs" };
+            });
+            if (!tr.length) empty("c-training", "No runs yet.");
+            else {
+              hbars("c-training", tr, Math.max.apply(null, tr.map(function (t) { return t.v || 0; }).concat([0.01])));
+              table(document.getElementById("c-training"), ["Group", "Runs", "Presses", "Perfect", "Rate"], order.filter(function (g) { return d.parry_by_training[g]; }).map(function (g) {
+                var x = d.parry_by_training[g];
+                return x.hidden ? [names[g], "&lt;" + d.min_group, "—", "—", "—"] : [names[g], fmt(x.runs), fmt(x.presses), fmt(x.perfect), pct(x.perfect, x.presses)];
+              }));
+            }
+
+            // Strike mix
+            var st = d.strikes, total = st.light + st.heavy + st.redonda + st.punyo;
+            if (!total) empty("c-strikes", "No strikes recorded yet.");
+            else {
+              var sm = [["Light", st.light], ["Heavy", st.heavy], ["Redonda", st.redonda], ["Punyo", st.punyo]].map(function (s) {
+                return { label: s[0], v: s[1] / total, text: pct(s[1], total), tip: fmt(s[1]) + " strikes (" + pct(s[1], total) + ")" };
+              });
+              hbars("c-strikes", sm, Math.max.apply(null, sm.map(function (s) { return s.v; })));
+              table(document.getElementById("c-strikes"), ["Strike", "Thrown", "Share"], sm.map(function (s) { return [s.label, fmt(Math.round(s.v * total)), s.text]; }));
+            }
+
+            // Grades by wave: 100% stacked, ordinal ramp C → S, 2px surface gaps.
+            renderGrades(d.grades);
+          }
+
+          // Big moments
+          var m = document.getElementById("moments"), mo = d.moments;
+          tile(m, "Agaw disarms", fmt(mo.agaw_disarms));
+          tile(m, "Redonda sweeps", fmt(mo.redonda_multi), "Redondas that caught 2+ enemies");
+          tile(m, "Slams", fmt(mo.slams), "enemies driven into walls or cover");
+          tile(m, "Cart hits", fmt(mo.cart_hits));
+          tile(m, "Kills with a taken saber", fmt(mo.kills_taken_saber), "of " + fmt(mo.kills) + " kills");
+
+          // Feedback
+          var f = document.getElementById("feedback"), fb = d.feedback || {};
+          function scale(x) { return x && x.mean != null ? x.mean.toFixed(1) + " / 5" : "—"; }
+          if (!fb.reports) {
+            var p = document.createElement("p"); p.className = "empty";
+            p.textContent = "Averages appear after " + d.min_group + " feedback reports.";
+            f.appendChild(p);
+          } else {
+            tile(f, "Combat was fun", scale(fb.fun), fb.fun ? fb.fun.n + " answers" : "");
+            tile(f, "Could tell when to parry", scale(fb.parry_readable), fb.parry_readable ? fb.parry_readable.n + " answers" : "");
+            tile(f, "Difficulty", scale(fb.difficulty), "1 too easy · 5 too hard");
+          }
+        }
+
+        function renderGrades(grades) {
+          var box = document.getElementById("c-grades");
+          var waves = [1, 2, 3, 4].filter(function (w) { return grades[w]; });
+          if (!waves.length) { empty("c-grades", "No waves cleared yet."); return; }
+          var keys = ["S", "A", "B", "C"], colors = { S: "var(--grade-s)", A: "var(--grade-a)", B: "var(--grade-b)", C: "var(--grade-c)" };
+          var W = Math.max(300, Math.round(box.clientWidth) || 760), rowH = 44, L = 70, H = waves.length * rowH;
+          var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": "Grades by wave" }, box);
+          var tip = tooltip(box);
+          waves.forEach(function (w, i) {
+            var g = grades[w], n = keys.reduce(function (a, k) { return a + g[k]; }, 0), y = i * rowH + 10, bh = 24, x = L;
+            el("text", { x: 0, y: y + 16 }, svg).textContent = "Wave " + w;
+            keys.forEach(function (k, j) {
+              if (!g[k]) return;
+              var w2 = (W - L) * (g[k] / n), gap = j < keys.length - 1 ? 2 : 0;
+              var seg = el("rect", { x: x, y: y, width: Math.max(w2 - gap, 0.5), height: bh, rx: 3, fill: colors[k] }, svg);
+              if (w2 > 40) el("text", { x: x + 8, y: y + 16, fill: k === "C" || k === "B" ? "#0c0a08" : "#f6eedd", style: "fill:" + (k === "C" || k === "B" ? "#0c0a08" : "#f6eedd") }, svg).textContent = k + " " + Math.round((g[k] / n) * 100) + "%";
+              seg.addEventListener("mousemove", function () {
+                var r = box.getBoundingClientRect(), s = r.width / W;
+                tip.show("Wave " + w + " · " + k + ": " + g[k] + " of " + n + " (" + Math.round((g[k] / n) * 100) + "%)", (x + w2 / 2) * s, y * s);
+              });
+              seg.addEventListener("mouseleave", tip.hide);
+              x += w2;
+            });
+          });
+          var leg = document.createElement("div");
+          leg.className = "legend";
+          leg.innerHTML = keys.map(function (k) { return '<span><i style="background:' + colors[k] + '"></i>' + k + (k === "S" ? " (best)" : "") + "</span>"; }).join("");
+          box.appendChild(leg);
+          table(box, ["Wave", "S", "A", "B", "C", "Cleared"], waves.map(function (w) {
+            var g = grades[w]; return ["Wave " + w, g.S, g.A, g.B, g.C, g.S + g.A + g.B + g.C];
+          }));
+        }
+      })();
+    </script>
+  </body>
+</html>
